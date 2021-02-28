@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     String new_text = textInput.getText().toString();
                     textLabel.setText(new_text);
+                    return true;
                 }
                 return false;
             }
