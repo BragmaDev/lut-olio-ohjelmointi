@@ -52,9 +52,9 @@ public class BottleDispenser {
         return dispenser;
     }
 
-    public void addMoney() {
-        money += 1;
-        System.out.println("Klink! Added more money!");
+    public void addMoney(TextView textOutput, double amount) {
+        money += amount;
+        textOutput.setText("Klink! Added more money!");
     }
 
     public void buyBottle(int bottle_index, TextView textOutput) {

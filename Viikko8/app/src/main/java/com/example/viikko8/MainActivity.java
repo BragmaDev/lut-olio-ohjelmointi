@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,9 +23,12 @@ public class MainActivity extends AppCompatActivity {
     TextView textBalance;
     Spinner spinProducts;
     Spinner spinSizes;
+    SeekBar seekAmount;
+    Button bttnAdd;
     String product;
     String size;
     double balance;
+    double amount;
     Locale fi;
 
     @Override
@@ -31,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottleDispenser dispenser = BottleDispenser.getInstance();
+        dispenser = BottleDispenser.getInstance();
         textBottles = (TextView) findViewById(R.id.textBottles);
         textOutput = (TextView) findViewById(R.id.textOutput);
         textBalance = (TextView) findViewById(R.id.textBalance);
         spinProducts = (Spinner) findViewById(R.id.spinProducts);
         spinSizes = (Spinner) findViewById(R.id.spinSizes);
+        seekAmount = (SeekBar) findViewById(R.id.seekAmount);
+        bttnAdd = (Button) findViewById(R.id.bttnAdd);
         fi = new Locale("fi", "FI");
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.products, R.layout.spinner_layout);
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinProducts.setAdapter(adapter1);
         spinSizes.setAdapter(adapter2);
+        seekAmount.setProgress(0);
 
         spinProducts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -68,9 +76,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });;
 
+        seekAmount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                amount = progress / 10; // Range of 0.00-10.00
+                String s = ("+" + String.format(fi, "%.2f", amount) + "€");
+                bttnAdd.setText(s);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
         dispenser.listBottles(textBottles);
         updateBalance(0);
-        checkForNullInstance();
     }
 
     public void purchase(View v) {
@@ -81,7 +101,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addMoney(View v) {
-        dispenser.addMoney();
+        dispenser.addMoney(textOutput, amount);
+        updateBalance(dispenser.getMoney());
+        seekAmount.setProgress(0);
+    }
+
+    public void returnMoney(View v) {
+        dispenser.returnMoney(textOutput);
         updateBalance(dispenser.getMoney());
     }
 
@@ -90,12 +116,4 @@ public class MainActivity extends AppCompatActivity {
         String s = ("Balance: " + String.format(fi, "%.2f", balance) + "€");
         textBalance.setText(s);
     }
-
-    // Prevents crash when calling the dispenser instance
-    private void checkForNullInstance() {
-        if (dispenser == null) {
-            dispenser = BottleDispenser.getInstance();
-        }
-    }
-
 }
