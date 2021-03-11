@@ -11,16 +11,19 @@
         android:id="@+id/textOutput"
         android:layout_width="233dp"
         android:layout_height="98dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
         android:fontFamily="monospace"
         android:text="Hello World!"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bttnAdd"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81" />
+        app:layout_constraintVertical_bias="0.917" />
 
     <Button
         android:id="@+id/bttnAdd"
@@ -28,12 +31,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
+        android:onClick="addMoney"
         android:text="+1,00€"
         app:backgroundTint="@color/teal_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.85" />
 
     <Button
         android:id="@+id/bttnReturn"
@@ -64,8 +68,8 @@
 
     <TextView
         android:id="@+id/textBottles"
-        android:layout_width="264dp"
-        android:layout_height="429dp"
+        android:layout_width="361dp"
+        android:layout_height="347dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
@@ -74,5 +78,42 @@
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinProducts"
+        android:layout_width="179dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:background="#535B63"
+        android:entries="@array/products"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBottles" />
+
+    <Spinner
+        android:id="@+id/spinSizes"
+        android:layout_width="179dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:background="#535B63"
+        android:entries="@array/sizes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinProducts" />
+
+    <Button
+        android:id="@+id/bttnPurchase"
+        android:layout_width="149dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="16dp"
+        android:onClick="purchase"
+        android:text="Purchase"
+        app:backgroundTint="@color/teal_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toEndOf="@+id/spinProducts"
+        app:layout_constraintTop_toBottomOf="@+id/textBottles" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Viikko8</string>
+    <string-array name="products">
+        <item>Pepsi Max</item>
+        <item>Coca-Cola Zero</item>
+        <item>Fanta Zero</item>
+    </string-array>
+    <string-array name="sizes">
+        <item>0,5l</item>
+        <item>1,5l</item>
+    </string-array>
 </resources>
