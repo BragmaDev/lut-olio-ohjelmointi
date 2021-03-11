@@ -53,11 +53,15 @@
 
     <TextView
         android:id="@+id/textBalance"
-        android:layout_width="104dp"
+        android:layout_width="96dp"
         android:layout_height="55dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="#535B63"
         android:fontFamily="monospace"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="4dp"
         android:text="Balance: "
         android:textColor="#FFFFFF"
         android:textSize="18sp"

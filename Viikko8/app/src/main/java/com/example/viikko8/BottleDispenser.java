@@ -53,11 +53,14 @@ public class BottleDispenser {
     }
 
     public void addMoney(TextView textOutput, double amount) {
-        money += amount;
-        textOutput.setText("Klink! Added more money!");
+        if (amount > 0) {
+            money += amount;
+            textOutput.setText("Klink! Added more money!");
+        }
     }
 
-    public void buyBottle(int bottle_index, TextView textOutput) {
+    public double buyBottle(int bottle_index, TextView textOutput) {
+        double price = 0;
         if (bottle_index == -1) {
             textOutput.setText("Bottle does not exist!");
 
@@ -67,8 +70,10 @@ public class BottleDispenser {
         }  else {
             money -= bottle_list.get(bottle_index).getPrice();
             textOutput.setText("KACHUNK! " + bottle_list.get(bottle_index).getName() + " came out of the dispenser!");
+            price = bottle_list.get(bottle_index).getPrice();
             removeBottle(bottle_index);
         }
+        return price;
     }
 
     public double getMoney() {
@@ -102,11 +107,8 @@ public class BottleDispenser {
     }
 
     public int findBottle(String product, String size) {
-        System.out.println("TEST1");
         for (Bottle bottle : bottle_list) {
-            System.out.println("TEST2");
             if (bottle.getName().equals(product) && bottle.getSize().equals(size)) {
-                System.out.println("TEST3");
                 return bottle_list.indexOf(bottle);
             }
         }
