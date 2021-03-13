@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         Context.MODE_PRIVATE));
 
                 String sum = (String.format(fi, "%.2f", latestPrice) + "€");
-                String s = ("*** RECEIPT ***\n\nProduct: " + product + " " + size + "\nSum: " +
+                String s = ("*** RECEIPT ***\n\nProduct:\t" + product + " " + size + "\nSum:\t\t" +
                         sum +"\n\nThank you for your purchase!");
                 out.write(s);
                 out.close();
