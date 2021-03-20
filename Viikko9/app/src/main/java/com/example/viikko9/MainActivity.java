@@ -46,9 +46,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     String url_final = "";
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     Date current_date = new Date();
+    Date desired_date = new Date();
+    Date after = current_date, before = current_date;
     TheaterManager manager = new TheaterManager();
     ArrayList<String> theater_names = new ArrayList<String>();
     ArrayList<String> showings = new ArrayList<String>();
+    String theater_name = "";
 
     EditText edit_date;
     EditText edit_after;
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         recy_movies = (RecyclerView) findViewById(R.id.recyMovies);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        // Initial values for the time pickers
+        after = setTime(0, 0);
+        before = setTime(23, 59);
 
         edit_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,13 +130,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         spin_theaters.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Forming the URL for the selected theater
-                String theater_name = (String) parent.getItemAtPosition(position);
-                url_final = url_head + manager.getTheaterId(theater_name) + "&dt=" + sdf.format(current_date);
-                System.out.println(url_final);
-                doc_movies = loadXML(url_final);
-                showings = manager.readShowingsXML(doc_movies);
-                setRecyAdapter();
+                theater_name = (String) parent.getItemAtPosition(position);
+                updateRecycler();
             }
 
             @Override
@@ -144,6 +146,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         edit_focused.setText(time_formatter.format(calendar.getTime()));
+        if (edit_focused == edit_after) {
+            after = setTime(hourOfDay, minute);
+        } else if (edit_focused == edit_before) {
+            before = setTime(hourOfDay, minute);
+        }
+        updateRecycler();
     }
 
     private void showDateDialog(EditText edit_date) {
@@ -156,6 +164,17 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                 edit_date.setText(sdf.format(calendar.getTime()));
+                desired_date = calendar.getTime();
+
+                // Updating the date for the time interval
+                after.setYear(desired_date.getYear());
+                after.setMonth(desired_date.getMonth());
+                after.setDate(desired_date.getDate());
+                before.setYear(desired_date.getYear());
+                before.setMonth(desired_date.getMonth());
+                before.setDate(desired_date.getDate());
+
+                updateRecycler();
             }
         };
 
@@ -186,6 +205,28 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Date setTime(int hour, int minute) {
+        Date date;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, desired_date.getDate());
+        calendar.set(Calendar.MONTH, desired_date.getMonth());
+        calendar.set(Calendar.YEAR, desired_date.getYear() + 1900);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        date = calendar.getTime();
+        return date;
+    }
+
+    private void updateRecycler() {
+        url_final = url_head + manager.getTheaterId(theater_name) + "&dt=" + sdf.format(desired_date);
+        System.out.println(url_final);
+        doc_movies = loadXML(url_final);
+        System.out.println("##########################" + url_final);
+        showings = manager.readShowingsXML(doc_movies, after, before);
+        setRecyAdapter();
     }
 
 }

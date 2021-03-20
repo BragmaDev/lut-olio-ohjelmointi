@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class TheaterManager {
     private ArrayList<Theater> theaters = new ArrayList<Theater>();
-    SimpleDateFormat sdfParser = new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss");
+    SimpleDateFormat sdfParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     SimpleDateFormat sdfFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     public TheaterManager() {}
@@ -52,28 +52,32 @@ public class TheaterManager {
         }
     }
 
-    public ArrayList<String> readShowingsXML(Document doc) {
+    public ArrayList<String> readShowingsXML(Document doc, Date after, Date before) {
         ArrayList<String> movie_titles = new ArrayList<String>();
         NodeList node_list = doc.getDocumentElement().getElementsByTagName("Show");
+
+        System.out.println(sdfFormatter.format(after) + " - " + sdfFormatter.format(before));
 
         for (int i = 0; i < node_list.getLength(); i++) {
             Node node = node_list.item(i);
 
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
-                String title = element.getElementsByTagName("Title").item(0).getTextContent();
-                String auditorium = element.getElementsByTagName("TheatreAndAuditorium").item(0).getTextContent();
                 Date start_time_date = null;
                 try {
                     start_time_date = sdfParser.parse(element.getElementsByTagName("dttmShowStart").item(0).getTextContent());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String start_time = sdfFormatter.format(start_time_date);
 
-                movie_titles.add(title + "\n" + auditorium + " | " + start_time);
+                if (start_time_date.after(after) && start_time_date.before(before)) {
+                    String title = element.getElementsByTagName("Title").item(0).getTextContent();
+                    String auditorium = element.getElementsByTagName("TheatreAndAuditorium").item(0).getTextContent();
+                    String start_time = sdfFormatter.format(start_time_date);
+
+                    movie_titles.add(title + "\n" + auditorium + " | " + start_time);
+                }
             }
-
         }
         return movie_titles;
     }
