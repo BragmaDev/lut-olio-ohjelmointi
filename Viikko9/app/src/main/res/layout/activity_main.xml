@@ -25,9 +25,10 @@
         android:layout_height="11dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.264" />
+        app:layout_constraintVertical_bias="0.347" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyMovies"
@@ -47,8 +48,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:hint="Start after"
-        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintBottom_toTopOf="@+id/editMovie"
         app:layout_constraintEnd_toStartOf="@+id/space2"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -60,8 +62,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:hint="Start before"
-        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintBottom_toTopOf="@+id/editMovie"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space2" />
 
@@ -73,7 +76,7 @@
         app:layout_constraintEnd_toStartOf="@+id/editBefore"
         app:layout_constraintStart_toEndOf="@+id/editAfter"
         app:layout_constraintTop_toBottomOf="@+id/spinTheater"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.58000004" />
 
     <EditText
         android:id="@+id/editDate"
@@ -90,5 +93,33 @@
         app:layout_constraintBottom_toTopOf="@+id/editAfter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editMovie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="Movie title"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/bttnSearch"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bttnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="updateRecycler"
+        android:text="Search"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,9 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,11 +55,13 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     ArrayList<String> theater_names = new ArrayList<String>();
     ArrayList<String> showings = new ArrayList<String>();
     String theater_name = "";
+    String movie_title = "";
 
     EditText edit_date;
     EditText edit_after;
     EditText edit_focused = null;
     EditText edit_before;
+    EditText edit_movie;
     Spinner spin_theaters;
     RecyclerView recy_movies;
     Document doc_movies;
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         edit_date = (EditText) findViewById(R.id.editDate);
         edit_after = (EditText) findViewById(R.id.editAfter);
         edit_before = (EditText) findViewById(R.id.editBefore);
+        edit_movie = (EditText) findViewById(R.id.editMovie);
         spin_theaters = (Spinner) findViewById(R.id.spinTheater);
         recy_movies = (RecyclerView) findViewById(R.id.recyMovies);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -115,11 +121,24 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             edit_before.setTextIsSelectable(true);
         }
 
+        edit_movie.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                movie_title = edit_movie.getText().toString();
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         // Setting up the recycler view
         setRecyAdapter();
 
         // Loading areas to the list
-        Document areas_xml = loadXML(url_areas_xml);
+        Document areas_xml = manager.loadXML(url_areas_xml);
         manager.readAreasXML(areas_xml);
 
         // Setting up the spinner for theater selection
@@ -131,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 theater_name = (String) parent.getItemAtPosition(position);
-                updateRecycler();
+                //updateRecycler();
             }
 
             @Override
@@ -151,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         } else if (edit_focused == edit_before) {
             before = setTime(hourOfDay, minute);
         }
-        updateRecycler();
+        //updateRecycler();
     }
 
     private void showDateDialog(EditText edit_date) {
@@ -174,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 before.setMonth(desired_date.getMonth());
                 before.setDate(desired_date.getDate());
 
-                updateRecycler();
+                //updateRecycler();
             }
         };
 
@@ -190,23 +209,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         recy_movies.setAdapter(adapter);
     }
 
-    Document loadXML(String url) {
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(url);
-            doc.getDocumentElement().normalize();
-
-            return doc;
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private Date setTime(int hour, int minute) {
         Date date;
         Calendar calendar = Calendar.getInstance();
@@ -220,13 +222,19 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         return date;
     }
 
-    private void updateRecycler() {
-        url_final = url_head + manager.getTheaterId(theater_name) + "&dt=" + sdf.format(desired_date);
-        System.out.println(url_final);
-        doc_movies = loadXML(url_final);
-        System.out.println("##########################" + url_final);
-        showings = manager.readShowingsXML(doc_movies, after, before);
-        setRecyAdapter();
+    public void updateRecycler(View v) {
+        if (!movie_title.equals("") && theater_name.equals("Valitse alue/teatteri")) {
+            showings = manager.readShowingsFromAllAreas(desired_date, after, before, movie_title);
+            setRecyAdapter();
+        } else {
+            url_final = url_head + manager.getTheaterId(theater_name) + "&dt=" + sdf.format(desired_date);
+            System.out.println(url_final);
+            doc_movies = manager.loadXML(url_final);
+            System.out.println("##########################" + url_final);
+            showings = manager.readShowingsXML(doc_movies, after, before, movie_title);
+            setRecyAdapter();
+        }
+
     }
 
 }
