@@ -4,9 +4,9 @@ public class Theater {
     private String name;
     private String id;
 
-    public Theater(String _name, String _id) {
-        name = _name;
-        id = _id;
+    public Theater(String name, String id) {
+        this.name = name;
+        this.id = id;
     }
 
     public String getName() {

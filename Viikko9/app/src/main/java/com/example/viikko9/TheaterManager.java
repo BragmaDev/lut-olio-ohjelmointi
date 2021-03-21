@@ -72,7 +72,6 @@ public class TheaterManager {
                 Theater theater = new Theater(name, id);
                 theaters.add(theater);
             }
-
         }
     }
 
@@ -96,8 +95,6 @@ public class TheaterManager {
     public ArrayList<String> readShowingsXML(Document doc, Date after, Date before, String movie_title) {
         ArrayList<String> movie_titles = new ArrayList<String>();
         NodeList node_list = doc.getDocumentElement().getElementsByTagName("Show");
-
-        //System.out.println(sdfFormatter.format(after) + " - " + sdfFormatter.format(before));
 
         for (int i = 0; i < node_list.getLength(); i++) {
             Node node = node_list.item(i);

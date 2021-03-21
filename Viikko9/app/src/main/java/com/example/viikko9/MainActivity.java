@@ -1,6 +1,5 @@
 package com.example.viikko9;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -15,31 +14,21 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -150,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 theater_name = (String) parent.getItemAtPosition(position);
-                //updateRecycler();
             }
 
             @Override
@@ -170,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         } else if (edit_focused == edit_before) {
             before = setTime(hourOfDay, minute);
         }
-        //updateRecycler();
     }
 
     private void showDateDialog(EditText edit_date) {
@@ -192,8 +179,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                 before.setYear(desired_date.getYear());
                 before.setMonth(desired_date.getMonth());
                 before.setDate(desired_date.getDate());
-
-                //updateRecycler();
             }
         };
 
@@ -212,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     private Date setTime(int hour, int minute) {
         Date date;
         Calendar calendar = Calendar.getInstance();
+
         calendar.set(Calendar.DAY_OF_MONTH, desired_date.getDate());
         calendar.set(Calendar.MONTH, desired_date.getMonth());
         calendar.set(Calendar.YEAR, desired_date.getYear() + 1900);
@@ -223,18 +209,15 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 
     public void updateRecycler(View v) {
-        if (!movie_title.equals("") && theater_name.equals("Valitse alue/teatteri")) {
+        if (!movie_title.equals("") && manager.getTheaterId(theater_name).equals("1029")) {
+            // Searching from all theaters
             showings = manager.readShowingsFromAllAreas(desired_date, after, before, movie_title);
             setRecyAdapter();
         } else {
             url_final = url_head + manager.getTheaterId(theater_name) + "&dt=" + sdf.format(desired_date);
-            System.out.println(url_final);
             doc_movies = manager.loadXML(url_final);
-            System.out.println("##########################" + url_final);
             showings = manager.readShowingsXML(doc_movies, after, before, movie_title);
             setRecyAdapter();
         }
-
     }
-
 }
