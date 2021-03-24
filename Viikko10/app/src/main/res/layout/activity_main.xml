@@ -24,7 +24,7 @@
         android:hint="http://"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/bttnRefresh"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bttnNext"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -32,9 +32,7 @@
         android:layout_width="54dp"
         android:layout_height="0dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
         android:onClick="refreshSite"
-        android:text="Refresh"
         app:icon="@android:drawable/stat_notify_sync"
         app:layout_constraintBottom_toTopOf="@+id/webView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,4 +58,29 @@
         android:text="initialize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bttnShoutOut" />
+
+    <Button
+        android:id="@+id/bttnPrev"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:onClick="prevSite"
+        android:text="\u003c"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/webView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bttnNext"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:onClick="nextSite"
+        android:text="\u003e"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/webView"
+        app:layout_constraintStart_toEndOf="@+id/bttnPrev"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
