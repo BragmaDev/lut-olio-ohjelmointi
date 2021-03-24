@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     String current_address = "";
 
     EditText edit_address;
+    Button bttn_refresh;
     WebView web;
 
     @Override
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         edit_address = (EditText) findViewById(R.id.editAddress);
+        bttn_refresh = (Button) findViewById(R.id.bttnRefresh);
         web = (WebView) findViewById(R.id.webView);
 
         web.setWebViewClient(new WebViewClient());
@@ -40,5 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private void loadWebsite(String url) {
         current_address = "http://" + url;
         web.loadUrl(current_address);
+    }
+
+    public void refreshSite(View v) {
+        web.loadUrl(web.getUrl());
     }
 }
