@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Week 11 - Matti Bragge"
         android:textColor="#ffffff"
+        android:textSize="16dp"
 
     ></TextView>
 

@@ -15,10 +15,11 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:id="@+id/toolbar"
-            android:background="?colorPrimary">
+            android:background="?colorPrimary"
+            android:elevation="10dp">
 
         </androidx.appcompat.widget.Toolbar>
 

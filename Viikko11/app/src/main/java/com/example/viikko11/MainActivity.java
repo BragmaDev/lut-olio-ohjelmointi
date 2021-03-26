@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     NavigationView nav_view;
     FragmentManager manager;
+    Fragment home_fragment;
+    Fragment settings_fragment;
+    SettingsSingleton settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +35,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         nav_view = findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
+        home_fragment = new HomeFragment();
+        settings_fragment = new SettingsFragment();
+        settings = SettingsSingleton.getInstance();
 
         manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.frag_container, new HomeFragment());
+        manager.beginTransaction().replace(R.id.frag_container, home_fragment);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.nav_draw_open, R.string.nav_draw_close);
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            manager.beginTransaction().replace(R.id.frag_container, new HomeFragment()).commit();
+            manager.beginTransaction().replace(R.id.frag_container, home_fragment).commit();
             nav_view.setCheckedItem(R.id.home);
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.home:
-                manager.beginTransaction().replace(R.id.frag_container, new HomeFragment()).commit();
-                break;
-            case R.id.settings:
-                manager.beginTransaction().replace(R.id.frag_container, new SettingsFragment()).commit();
-                break;
+        if (item.getItemId() == R.id.home) {
+            manager.beginTransaction().replace(R.id.frag_container, home_fragment).commit();
+        } else {
+            manager.beginTransaction().replace(R.id.frag_container, settings_fragment).commit();
         }
 
         drawer_layout.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
