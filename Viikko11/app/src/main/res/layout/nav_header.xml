@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="?colorPrimary"
+    android:theme="@style/Theme.Viikko11.WithoutActionBar">
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="64dp">
+
+    </Space>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Week 11 - Matti Bragge"
+        android:textColor="#ffffff"
+
+    ></TextView>
+
+
+</LinearLayout>
