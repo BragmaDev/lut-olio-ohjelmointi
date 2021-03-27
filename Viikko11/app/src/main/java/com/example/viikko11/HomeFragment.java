@@ -11,9 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.w3c.dom.Text;
+
 public class HomeFragment extends Fragment {
 
     TextView text_read;
+    TextView text_display_text;
     EditText edit_text;
     String edited_text = "Text goes here";
     View view;
@@ -30,6 +33,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         settings = SettingsSingleton.getInstance();
         text_read = (TextView) this.view.findViewById(R.id.textRead);
+        text_display_text = (TextView) this.view.findViewById(R.id.textDisplayText);
         edit_text = (EditText) this.view.findViewById(R.id.editText);
     }
 
@@ -47,6 +51,6 @@ public class HomeFragment extends Fragment {
         text_read.setWidth(settings.getWidth());
         text_read.setHeight(settings.getHeight());
         text_read.setAllCaps(settings.getAllCaps());
-
+        text_display_text.setText(settings.getDisplayText());
     }
 }

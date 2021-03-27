@@ -7,12 +7,17 @@ public class SettingsSingleton {
     private int width;
     private int height;
     private boolean all_caps;
+    private String display_text;
 
     private static SettingsSingleton settings = new SettingsSingleton();
 
     private SettingsSingleton() {
         editing_enabled = true;
         font_size = 14;
+        width = 500;
+        height = 500;
+        all_caps = false;
+        display_text = "";
     }
 
     public static SettingsSingleton getInstance() {
@@ -33,4 +38,7 @@ public class SettingsSingleton {
 
     public boolean getAllCaps() { return all_caps; }
     public void setAllCaps(boolean b) { all_caps = b; }
+
+    public String getDisplayText() { return display_text; }
+    public void setDisplayText(String s) { display_text = s; }
 }
