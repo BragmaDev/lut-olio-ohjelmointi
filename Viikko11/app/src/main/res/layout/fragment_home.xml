@@ -10,6 +10,7 @@
         android:id="@+id/textRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#ECEFF1"
         android:text="Readable text field"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"

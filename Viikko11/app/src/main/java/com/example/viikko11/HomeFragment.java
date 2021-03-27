@@ -43,5 +43,10 @@ public class HomeFragment extends Fragment {
             edit_text.setEnabled(true);
         }
         text_read.setText(edited_text);
+        text_read.setTextSize(settings.getFontSize());
+        text_read.setWidth(settings.getWidth());
+        text_read.setHeight(settings.getHeight());
+        text_read.setAllCaps(settings.getAllCaps());
+
     }
 }
