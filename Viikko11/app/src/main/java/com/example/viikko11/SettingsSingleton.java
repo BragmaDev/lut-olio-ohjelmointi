@@ -8,6 +8,7 @@ public class SettingsSingleton {
     private int height;
     private boolean all_caps;
     private String display_text;
+    private String language;
 
     private static SettingsSingleton settings = new SettingsSingleton();
 
@@ -41,4 +42,7 @@ public class SettingsSingleton {
 
     public String getDisplayText() { return display_text; }
     public void setDisplayText(String s) { display_text = s; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String s) { language = s; }
 }

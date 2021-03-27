@@ -18,7 +18,7 @@ public class HomeFragment extends Fragment {
     TextView text_read;
     TextView text_display_text;
     EditText edit_text;
-    String edited_text = "Text goes here";
+    String edited_text = "";
     View view;
     SettingsSingleton settings;
 

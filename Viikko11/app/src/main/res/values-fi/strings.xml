@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Viikko11</string>
+    <string name="nav_draw_open">Avaa navigaatiomenu</string>
+    <string name="nav_draw_close">Sulje navigaatiomenu</string>
+    <string name="home_title">Koti</string>
+    <string name="settings_title">Asetukset</string>
+    <string name="edit_enabled">Muokkaus sallittu</string>
+    <string name="edit_disabled">Muokkaus estetty</string>
+    <string name="button_text">Salli/Estä muokkaus</string>
+    <string name="font_size_text">Fonttikoko (sp)</string>
+    <string name="width_text">Tekstikentän leveys (0-999 px)</string>
+    <string name="height_text">Tekstikentän korkeus (0-999 px)</string>
+    <string name="all_caps_label">Isot kirjaimet </string>
+    <string name="display_text_hint">Näytettävä teksti</string>
+    <string name="edit_text_hint">Muokkaa tekstiä</string>
+    <string-array name="languages">
+        <item>en</item>
+        <item>fi</item>
+    </string-array>
+</resources>

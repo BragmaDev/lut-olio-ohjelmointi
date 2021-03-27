@@ -1,11 +1,15 @@
 package com.example.viikko11;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -18,6 +22,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
 
@@ -77,9 +83,9 @@ public class SettingsFragment extends Fragment {
 
         text_toggled = (TextView) view.findViewById(R.id.textToggled);
         if (settings.getEditingEnabled()) {
-            text_toggled.setText("Editing enabled");
+            text_toggled.setText(getString(R.string.edit_enabled));
         } else {
-            text_toggled.setText("Editing disabled");
+            text_toggled.setText(getString(R.string.edit_disabled));
         }
 
         button_toggle = (Button) view.findViewById(R.id.buttonToggle);
@@ -88,9 +94,9 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 settings.setEditingEnabled(!settings.getEditingEnabled());
                 if (settings.getEditingEnabled()) {
-                    text_toggled.setText("Editing enabled");
+                    text_toggled.setText(getString(R.string.edit_enabled));
                 } else {
-                    text_toggled.setText("Editing disabled");
+                    text_toggled.setText(getString(R.string.edit_disabled));
                 }
             }
         });
@@ -125,5 +131,24 @@ public class SettingsFragment extends Fragment {
 
         spin_languages = (Spinner) view.findViewById(R.id.spinLanguages);
         spin_languages.setAdapter(adapter);
+        spin_languages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                settings.setLanguage((String) parent.getItemAtPosition(position));
+                setLocale(getActivity());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
+
+    private void setLocale(Activity activity) {
+        Locale locale = new Locale(settings.getLanguage());
+        Locale.setDefault(locale);
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
 }
