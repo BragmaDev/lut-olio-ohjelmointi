@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HT</string>
+    <string name="nav_draw_open">Open nav drawer</string>
+    <string name="nav_draw_close">Close nav drawer</string>
+</resources>
