@@ -21,6 +21,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class EntryManager {
 
+    private Entry entry = null;
+
     private int beef_cons;
     private int fish_cons;
 
@@ -50,37 +52,16 @@ public class EntryManager {
 
     public void parseResponse(StringBuffer response) {
         String[] s_arr = response.toString().split(",", 5);
+        double[] d_arr = {0.0, 0.0, 0.0, 0.0, 0.0};
 
         for (int i = 0; i < s_arr.length; i++) {
-
-            // Getting the float value of each line
+            // Getting the double value of each line
             String s = s_arr[i].split(":", 2)[1];
             s = s.replace("}", "");
             double value = Double.parseDouble(s);
-            System.out.println(value);
+            d_arr[i] = value;
         }
-        /*
-        try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(new InputSource(new StringReader(response.toString())));
-            doc.getDocumentElement().normalize();
 
-            NodeList nodes = doc.getElementsByTagName("FoodCalculatorController.FoodCalculationResult");
-            if (nodes.getLength() > 0) {
-                Element err = (Element) nodes.item(0);
-                System.out.println(err.getElementsByTagName("Dairy").item(0).getTextContent());
-                System.out.println("##############################");
-                System.out.println("##############################");
-                System.out.println("##############################");
-                System.out.println("##############################");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-         */
+        entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
     }
 }
