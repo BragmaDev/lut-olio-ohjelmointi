@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             nav_view.setCheckedItem(R.id.home);
         }
 
-        //entry_manager.sendRequest("");
+        entry_manager.getResponse();
 
     }
 
