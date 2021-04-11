@@ -2,11 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/home"
-            android:title="Home"></item>
+            android:id="@+id/account"
+            android:title="Account"></item>
+        <item
+            android:id="@+id/co2_emission"
+            android:title="CO2 Emission"></item>
+        <item
+            android:id="@+id/weight"
+            android:title="Weight"></item>
         <item
             android:id="@+id/settings"
-            android:title="Settings"></item>
+            android:title="User settings"></item>
     </group>
 
 </menu>
