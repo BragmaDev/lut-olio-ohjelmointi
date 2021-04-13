@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentChangeListener {
 
     Context context;
 
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager frag_manager;
     Fragment entry_fragment;
+    Fragment co2_fragment;
 
     EntryManager entry_manager;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         entry_manager = new EntryManager();
         entry_fragment = new EntryFragment();
+        co2_fragment = new CO2Fragment(this);
 
         frag_manager = getSupportFragmentManager();
         frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment).commit();
+            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
             nav_view.setCheckedItem(R.id.home);
         }
 
@@ -67,13 +69,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.home) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment).commit();
+        if (item.getItemId() == R.id.co2_emission) {
+            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         } else {
-            frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment).commit();
+            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         }
 
         drawer_layout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void changeFragment(String frag_name) {
+        Fragment frag = null;
+        if (frag_name.equals("entry")) {
+            frag = entry_fragment;
+        } else {
+            frag = co2_fragment;
+        }
+        frag_manager.beginTransaction().replace(R.id.frag_container, frag).commit();
     }
 }

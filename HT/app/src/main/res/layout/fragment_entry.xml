@@ -8,7 +8,7 @@
     android:background="@color/blue_grey">
 
     <TextView
-        android:id="@+id/textTitle"
+        android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/space"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textDate" />
 
     <TextView
         android:id="@+id/textSubtitle2"
