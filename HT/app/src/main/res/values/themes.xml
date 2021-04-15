@@ -40,5 +40,6 @@
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlActivated">@color/grey_50</item>
         <item name="colorControlNormal">@color/green_500</item>
+        <item name="android:textColorHint">@color/grey_500</item>
     </style>
 </resources>

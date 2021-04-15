@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_view.setNavigationItemSelectedListener(this);
 
         entry_manager = new EntryManager();
-        entry_fragment = new EntryFragment();
+        entry_fragment = new EntryFragment(entry_manager);
         co2_fragment = new CO2Fragment(this);
 
         frag_manager = getSupportFragmentManager();
@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
             nav_view.setCheckedItem(R.id.home);
         }
-
-        entry_manager.getResponse();
 
     }
 

@@ -27,6 +27,7 @@ public class CO2Fragment extends Fragment {
 
     View view;
     MainActivity main = null;
+    EntryManager em = null;
     ArrayList<String> date_log = new ArrayList<>();
     ArrayList<Double> emission_log = new ArrayList<>();
 
@@ -92,7 +93,9 @@ public class CO2Fragment extends Fragment {
         recycler_log.setAdapter(adapter);
     }
 
-    public void switchToEntryFragment() {
+    private void switchToEntryFragment() {
         main.changeFragment("entry");
     }
+
+
 }

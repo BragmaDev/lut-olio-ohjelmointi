@@ -4,7 +4,7 @@ import java.util.Date;
 
 public abstract class Entry {
 
-    private Date date;
+    protected Date date;
 
     public Date getDate() { return date; }
 

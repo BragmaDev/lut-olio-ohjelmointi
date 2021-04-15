@@ -21,16 +21,30 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class EntryManager {
 
-    private Entry entry = null;
-
-    private int beef_cons;
-    private int fish_cons;
+    private ClimateDietEntry entry = null;
 
     private String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
     private String req_url_tail = "?query.diet=omnivore";
 
-    public void getResponse() {
+    private void constructTail(int cons[]) {
+        req_url_tail = (req_url_tail
+                + "&query.beefLevel=" + cons[0]
+                + "&query.fishLevel=" + cons[1]
+                + "&query.porkPoultryLevel=" + cons[1]
+                + "&query.dairyLevel=" + cons[1]
+                + "&query.cheeseLevel=" + cons[1]
+                + "&query.riceLevel=" + cons[1]
+                + "&query.winterSaladLevel=" + cons[1]
+                + "&query.restaurantSpending=" + cons[1]
+                + "&query.eggLevel=" + cons[1]
+        );
+    }
+
+    public void getResponse(int cons[]) {
         URL url = null;
+        ClimateDietEntry entry = null;
+
+        constructTail(cons);
         try {
             url = new URL(req_url_head + req_url_tail);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -50,7 +64,7 @@ public class EntryManager {
         }
     }
 
-    public void parseResponse(StringBuffer response) {
+    private void parseResponse(StringBuffer response) {
         String[] s_arr = response.toString().split(",", 5);
         double[] d_arr = {0.0, 0.0, 0.0, 0.0, 0.0};
 
@@ -63,5 +77,18 @@ public class EntryManager {
         }
 
         entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
+        printInfo();
+    }
+
+    public ClimateDietEntry getEntry() { return entry; }
+
+    private void printInfo() {
+        System.out.println("Entry's date: " + entry.getDate() + "##########################");
+        System.out.println(entry.getEmissions()[0] + " | "
+        + entry.getEmissions()[1] + " | "
+        + entry.getEmissions()[2] + " | "
+        + entry.getEmissions()[3] + " | "
+        + entry.getEmissions()[4]
+        );
     }
 }

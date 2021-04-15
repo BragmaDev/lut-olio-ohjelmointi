@@ -1,5 +1,7 @@
 package com.example.ht;
 
+import java.util.Date;
+
 public class ClimateDietEntry extends Entry {
     private double dairy_emission;
     private double meat_emission;
@@ -13,6 +15,7 @@ public class ClimateDietEntry extends Entry {
         this.plant_emission = p;
         this.restaurant_emission = r;
         this.total_emission = t;
+        date = new Date();
     }
 
     public double[] getEmissions() {
