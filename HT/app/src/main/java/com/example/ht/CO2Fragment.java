@@ -21,15 +21,18 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CO2Fragment extends Fragment {
 
     View view;
     MainActivity main = null;
-    EntryManager em = null;
+    EntryManager em = EntryManager.getInstance();
+    UserManager um = UserManager.getInstance();
     ArrayList<String> date_log = new ArrayList<>();
     ArrayList<Double> emission_log = new ArrayList<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     GraphView graph;
     Button button_new_entry;
@@ -47,25 +50,26 @@ public class CO2Fragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        date_log.add("[22.3.2021]");
-        date_log.add("[20.3.2021]");
-        date_log.add("[18.3.2021]");
-        date_log.add("[16.3.2021]");
-        emission_log.add(1234.56);
-        emission_log.add(1234.56);
-        emission_log.add(1234.56);
-        emission_log.add(1234.56);
+        if (em.getEntries().size() > 0) {
+            em.setEntries((um.getUser().getEntries(0)));
+            for (Entry e : em.getEntries()) {
+                if (e instanceof ClimateDietEntry) {
+                    date_log.add(sdf.format(e.getDate()));
+                    emission_log.add(((ClimateDietEntry) e).getEmissions()[4]);
+                }
+            }
+        }
 
         // Graph setup
         graph = (GraphView) view.findViewById(R.id.graph);
-        GridLabelRenderer grl = graph.getGridLabelRenderer();
-        grl.setHorizontalAxisTitle("Date");
-        grl.setHorizontalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        grl.setVerticalAxisTitle("Emission");
-        grl.setVerticalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        grl.setVerticalLabelsVisible(false);
-        grl.setHorizontalLabelsVisible(false);
-        grl.setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        GridLabelRenderer glr = graph.getGridLabelRenderer();
+        glr.setHorizontalAxisTitle("Date");
+        glr.setHorizontalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
+        glr.setVerticalAxisTitle("Emission");
+        glr.setVerticalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
+        glr.setVerticalLabelsVisible(false);
+        glr.setHorizontalLabelsVisible(false);
+        glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),

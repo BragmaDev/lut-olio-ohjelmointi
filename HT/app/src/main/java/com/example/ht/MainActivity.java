@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment entry_fragment;
     Fragment co2_fragment;
 
-    EntryManager entry_manager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_view = findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
 
-        entry_manager = new EntryManager();
-        entry_fragment = new EntryFragment(entry_manager);
+        entry_fragment = new EntryFragment();
         co2_fragment = new CO2Fragment(this);
 
         frag_manager = getSupportFragmentManager();

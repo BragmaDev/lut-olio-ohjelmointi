@@ -15,7 +15,8 @@ import androidx.fragment.app.Fragment;
 
 public class EntryFragment extends Fragment {
 
-    EntryManager em;
+    EntryManager em = EntryManager.getInstance();
+    UserManager um = UserManager.getInstance();
     View view;
     SeekBar seek_beef;
     SeekBar seek_fish;
@@ -28,8 +29,6 @@ public class EntryFragment extends Fragment {
     EditText edit_eggs;
     Button button_add;
     int[] cons = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    public EntryFragment(EntryManager em) { this.em = em; }
 
     @Nullable
     @Override
@@ -67,8 +66,12 @@ public class EntryFragment extends Fragment {
         cons[4] = seek_cheese.getProgress();
         cons[5] = seek_rice.getProgress();
         cons[6] = seek_wsalad.getProgress();
-        cons[7] = Integer.parseInt(edit_restaurant.getText().toString());
-        cons[8] = Integer.parseInt(edit_eggs.getText().toString());
+        if (!edit_restaurant.getText().toString().equals("")) {
+            cons[7] = Integer.parseInt(edit_restaurant.getText().toString());
+        }
+        if (!edit_eggs.getText().toString().equals("")) {
+            cons[8] = Integer.parseInt(edit_eggs.getText().toString());
+        }
     }
 
     // Resetting the seekbars and other input fields
@@ -88,5 +91,6 @@ public class EntryFragment extends Fragment {
         updateConsumptionValues();
         em.getResponse(cons);
         resetInputs();
+        um.getUser().addEntry(0, em.getEntry());
     }
 }

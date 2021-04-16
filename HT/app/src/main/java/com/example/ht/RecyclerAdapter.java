@@ -44,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Adapte
         String date = dates.get(position);
         double emission = emissions.get(position);
         holder.text_date.setText(date);
-        holder.text_emission.setText(Double.toString(emission) + " kg");
+        holder.text_emission.setText(String.format("%.2f", emission) + " kg");
     }
 
     @Override
