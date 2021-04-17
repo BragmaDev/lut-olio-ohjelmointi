@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class EntryFragment extends Fragment {
     EditText edit_eggs;
     EditText edit_date;
     Date selected_date;
+    TextView text_reminder;
     Button button_add;
     int[] cons = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -64,6 +67,7 @@ public class EntryFragment extends Fragment {
             }
         });
         edit_date.setShowSoftInputOnFocus(false);
+        (text_reminder = (TextView) view.findViewById(R.id.textReminder)).setText("");
         resetInputs();
 
         button_add = (Button) view.findViewById(R.id.buttonAdd);
@@ -129,10 +133,15 @@ public class EntryFragment extends Fragment {
     }
 
     private void addEntry() {
-        updateConsumptionValues();
-        em.getResponse(cons);
-        em.getEntry().setDate(selected_date);
-        um.getUser().addEntry(em.getEntry());
-        resetInputs();
+        if (selected_date == null) {
+            text_reminder.setText("Please select a date");
+        } else {
+            updateConsumptionValues();
+            em.getResponse(cons);
+            em.getEntry().setDate(selected_date);
+            um.getUser().addEntry(em.getEntry());
+            resetInputs();
+            text_reminder.setText("");
+        }
     }
 }
