@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -95,5 +97,14 @@ public class EntryManager {
         + entry.getEmissions()[3] + " | "
         + entry.getEmissions()[4]
         );
+    }
+
+    public void sortEntries(ArrayList<Entry> entries) {
+        Collections.sort(entries, new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                return o1.getDate().getTime() > o2.getDate().getTime() ? 1 : -1;
+            }
+        });
     }
 }

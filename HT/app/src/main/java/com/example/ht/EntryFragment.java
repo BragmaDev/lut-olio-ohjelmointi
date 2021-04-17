@@ -107,6 +107,9 @@ public class EntryFragment extends Fragment {
         edit_eggs.setText("");
         edit_date.setText("");
         selected_date = null;
+        for (int i = 0; i < cons.length; i++) {
+            cons[i] = 0;
+        }
     }
 
     private void showDateDialog() {
@@ -140,6 +143,7 @@ public class EntryFragment extends Fragment {
             em.getResponse(cons);
             em.getEntry().setDate(selected_date);
             um.getUser().addEntry(em.getEntry());
+            em.sortEntries(um.getUser().getEntries(0));
             resetInputs();
             text_reminder.setText("");
         }

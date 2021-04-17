@@ -74,13 +74,14 @@ public class CO2Fragment extends Fragment {
         glr.setVerticalLabelsVisible(false);
         glr.setHorizontalLabelsVisible(false);
         glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
+        graph.getViewport().setMinY(0.0);
+        graph.getViewport().setMaxY(4000.0);
+        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(0).size()];
+        for (int i = 0; i < um.getUser().getEntries(0).size(); i++) {
+            ClimateDietEntry e = (ClimateDietEntry) um.getUser().getEntries(0).get(i);
+            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[4]);
+        }
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
         series.setColor(getResources().getColor(R.color.green_500, null));
         graph.addSeries(series);
 
