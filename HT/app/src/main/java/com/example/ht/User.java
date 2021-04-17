@@ -37,10 +37,24 @@ public class User implements Serializable {
         }
     }
 
-    public void addEntry(int arraylist_id, Entry entry) {
-        if (arraylist_id == 0) {
+    public void addEntry(Entry entry) {
+        if (entry instanceof ClimateDietEntry) {
+            // Checking if the same date has an entry
+            for (Entry e : climate_diet_entries) {
+                if (e.getDate().equals(entry.getDate())) {
+                    climate_diet_entries.remove(e);
+                    break;
+                }
+            }
             climate_diet_entries.add(entry);
         } else {
+            // Checking if the same date has an entry
+            for (Entry e : weight_entries) {
+                if (e.getDate().equals(entry.getDate())) {
+                    weight_entries.remove(e);
+                    break;
+                }
+            }
             weight_entries.add(entry);
         }
     }

@@ -50,9 +50,13 @@ public class CO2Fragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (em.getEntries().size() > 0) {
-            em.setEntries((um.getUser().getEntries(0)));
-            for (Entry e : em.getEntries()) {
+
+        // Resetting the log
+        date_log.clear();
+        emission_log.clear();
+
+        if (um.getUser().getEntries(0).size() > 0) {
+            for (Entry e : um.getUser().getEntries(0)) {
                 if (e instanceof ClimateDietEntry) {
                     date_log.add(sdf.format(e.getDate()));
                     emission_log.add(((ClimateDietEntry) e).getEmissions()[4]);
@@ -87,6 +91,7 @@ public class CO2Fragment extends Fragment {
             public void onClick(View v) { switchToEntryFragment(); }
         });
         setRecyclerAdapter();
+        System.out.println("Date log: " + date_log.size() + " Emission log: " + emission_log.size());
     }
 
     private void setRecyclerAdapter() {

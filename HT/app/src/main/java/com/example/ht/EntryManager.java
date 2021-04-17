@@ -23,7 +23,6 @@ import javax.xml.parsers.ParserConfigurationException;
 public class EntryManager {
 
     private ClimateDietEntry entry = null;
-    private ArrayList<Entry> entries = new ArrayList<>();
 
     private String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
     private String req_url_tail = "";
@@ -48,7 +47,6 @@ public class EntryManager {
 
     public void getResponse(int cons[]) {
         URL url = null;
-        ClimateDietEntry entry = null;
 
         constructTail(cons);
         System.out.println("Tail: " + req_url_tail + "##################################");
@@ -84,13 +82,10 @@ public class EntryManager {
         }
 
         entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
-        entries.add(entry);
         printInfo();
     }
 
     public ClimateDietEntry getEntry() { return entry; }
-    public ArrayList<Entry> getEntries() { return entries; }
-    public void setEntries(ArrayList<Entry> entries) { this.entries = entries; }
 
     private void printInfo() {
         System.out.println("Entry's date: " + entry.getDate() + "##########################");
