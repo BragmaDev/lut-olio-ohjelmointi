@@ -1,10 +1,12 @@
 package com.example.ht;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -12,6 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class EntryFragment extends Fragment {
 
@@ -27,6 +33,8 @@ public class EntryFragment extends Fragment {
     SeekBar seek_wsalad;
     EditText edit_restaurant;
     EditText edit_eggs;
+    EditText edit_date;
+    Date selected_date;
     Button button_add;
     int[] cons = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -48,6 +56,14 @@ public class EntryFragment extends Fragment {
         (seek_wsalad = (SeekBar) view.findViewById(R.id.seekWsalad)).setMax(200);
         edit_restaurant = (EditText) view.findViewById(R.id.editRestaurant);
         edit_eggs = (EditText) view.findViewById(R.id.editEggs);
+        edit_date = (EditText) view.findViewById(R.id.editDate);
+        edit_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog();
+            }
+        });
+        edit_date.setShowSoftInputOnFocus(false);
         resetInputs();
 
         button_add = (Button) view.findViewById(R.id.buttonAdd);
@@ -85,11 +101,33 @@ public class EntryFragment extends Fragment {
         seek_wsalad.setProgress(100);
         edit_restaurant.setText("");
         edit_eggs.setText("");
+        edit_date.setText("");
+        selected_date = null;
+    }
+
+    private void showDateDialog() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        DatePickerDialog.OnDateSetListener dsl = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                edit_date.setText(sdf.format(calendar.getTime()));
+                selected_date = calendar.getTime();
+            }
+        };
+
+        new DatePickerDialog(getContext(), dsl, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void addEntry() {
         updateConsumptionValues();
         em.getResponse(cons);
+        em.getEntry().setDate(selected_date);
         resetInputs();
         um.getUser().addEntry(0, em.getEntry());
     }
