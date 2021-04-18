@@ -8,7 +8,7 @@
     android:background="@color/blue_grey">
 
     <TextView
-        android:id="@+id/textDate"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonNewEntry"
+        android:id="@+id/buttonChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerLogCO2"
@@ -52,5 +52,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNewEntry" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonChange" />
 </androidx.constraintlayout.widget.ConstraintLayout>

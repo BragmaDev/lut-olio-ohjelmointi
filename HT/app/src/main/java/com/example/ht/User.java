@@ -16,12 +16,17 @@ public class User implements Serializable {
         this.name = name;
         climate_diet_entries = new ArrayList<>();
         weight_entries = new ArrayList<>();
+        weight = 60.0f;
+        diet = "Omnivore";
+        low_carbon = true;
     }
 
     public String getName() { return name; }
     public float getWeight() { return weight; }
     public String getDiet() { return diet; }
+    public void setDiet(String diet) { this.diet = diet; }
     public boolean getLowCarbon() { return low_carbon; }
+    public void setLowCarbon(boolean low_carbon) { this.low_carbon = low_carbon; }
     public ArrayList<Entry> getEntries(int arraylist_id) {
         if (arraylist_id == 0) {
             return climate_diet_entries;

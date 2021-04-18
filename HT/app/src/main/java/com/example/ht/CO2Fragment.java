@@ -1,13 +1,10 @@
 package com.example.ht;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,7 +83,7 @@ public class CO2Fragment extends Fragment {
         graph.addSeries(series);
 
         recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogCO2);
-        button_new_entry = (Button) view.findViewById(R.id.buttonNewEntry);
+        button_new_entry = (Button) view.findViewById(R.id.buttonChange);
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { switchToEntryFragment(); }

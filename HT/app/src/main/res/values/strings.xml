@@ -2,4 +2,13 @@
     <string name="app_name">HT</string>
     <string name="nav_draw_open">Open nav drawer</string>
     <string name="nav_draw_close">Close nav drawer</string>
+    <string-array name="diets">
+        <item>Omnivore</item>
+        <item>Vegan</item>
+        <item>Vegetarian</item>
+    </string-array>
+    <string-array name="prefs">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>

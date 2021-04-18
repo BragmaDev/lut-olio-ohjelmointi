@@ -8,8 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.AdapterViewHolder> {
@@ -27,7 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Adapte
 
         public AdapterViewHolder(final View view) {
             super(view);
-            text_date = (TextView) view.findViewById(R.id.textDate);
+            text_date = (TextView) view.findViewById(R.id.textTitle);
             text_emission = (TextView) view.findViewById(R.id.textEmission);
         }
     }

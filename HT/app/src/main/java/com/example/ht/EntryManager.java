@@ -33,8 +33,11 @@ public class EntryManager {
     private EntryManager() {}
     public static EntryManager getInstance() { return em; }
 
+    UserManager um = UserManager.getInstance();
+
     private void constructTail(int cons[]) {
-        req_url_tail = ("?query.diet=omnivore"
+        req_url_tail = ("?query.diet=" + um.getUser().getDiet()
+                + "&query.lowCarbonPreference=" + um.getUser().getLowCarbon()
                 + "&query.beefLevel=" + cons[0]
                 + "&query.fishLevel=" + cons[1]
                 + "&query.porkPoultryLevel=" + cons[2]
