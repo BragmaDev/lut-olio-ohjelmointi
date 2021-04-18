@@ -63,6 +63,13 @@ public class CO2Fragment extends Fragment {
 
         // Graph setup
         graph = (GraphView) view.findViewById(R.id.graph);
+        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(0).size()];
+        for (int i = 0; i < um.getUser().getEntries(0).size(); i++) {
+            ClimateDietEntry e = (ClimateDietEntry) um.getUser().getEntries(0).get(i);
+            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[4]);
+        }
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
+        series.setColor(getResources().getColor(R.color.green_500, null));
         GridLabelRenderer glr = graph.getGridLabelRenderer();
         glr.setHorizontalAxisTitle("Date");
         glr.setHorizontalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
@@ -71,17 +78,23 @@ public class CO2Fragment extends Fragment {
         glr.setVerticalLabelsVisible(false);
         glr.setHorizontalLabelsVisible(false);
         glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0.0);
-        graph.getViewport().setMaxY(4000.0);
-        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(0).size()];
-        for (int i = 0; i < um.getUser().getEntries(0).size(); i++) {
-            ClimateDietEntry e = (ClimateDietEntry) um.getUser().getEntries(0).get(i);
-            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[4]);
+        if (datapoints.length > 0) {
+            graph.getViewport().setMinX(datapoints[0].getX());
+            graph.getViewport().setMaxX(datapoints[datapoints.length - 1].getX());
+            for (DataPoint datapoint : datapoints) {
+                if (graph.getViewport().getMaxY(false) < datapoint.getY()) {
+                    graph.getViewport().setMaxY(datapoint.getY());
+                }
+            }
+        } else {
+            graph.getViewport().setMaxX(1);
+            graph.getViewport().setMaxY(1);
         }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
-        series.setColor(getResources().getColor(R.color.green_500, null));
         graph.addSeries(series);
-
+        
         recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogCO2);
         button_new_entry = (Button) view.findViewById(R.id.buttonChange);
         button_new_entry.setOnClickListener(new View.OnClickListener() {
