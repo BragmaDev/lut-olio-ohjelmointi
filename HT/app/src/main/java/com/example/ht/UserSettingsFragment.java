@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.w3c.dom.Text;
+
 public class UserSettingsFragment extends Fragment {
     View view;
     MainActivity main = null;
@@ -23,6 +25,9 @@ public class UserSettingsFragment extends Fragment {
     TextView text_weight;
     Spinner spinner_diet;
     Spinner spinner_low_carbon;
+
+    boolean diet_initialized;
+    boolean low_carbon_initialized;
 
     public UserSettingsFragment(MainActivity main) { this.main = main; }
     public UserSettingsFragment() {}
@@ -42,50 +47,55 @@ public class UserSettingsFragment extends Fragment {
         spinner_diet = (Spinner) view.findViewById(R.id.spinnerDiet);
         spinner_low_carbon = (Spinner) view.findViewById(R.id.spinnerLowCarbon);
 
+        /* These booleans are used to prevent the spinners' setOnItemSelectedListeners from activating
+        immediately when opening the fragment */
+        diet_initialized = false;
+        low_carbon_initialized = false;
+
         text_title.setText(um.getUser().getName());
-        text_weight.setText(Float.toString(um.getUser().getWeight()));
+        text_weight.setText(Float.toString(um.getUser().getWeight()) + " kg");
 
         // Setting up the spinners
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
         R.array.diets, R.layout.spinner_layout);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_diet.setAdapter(adapter1);
-        System.out.println("The item at currpos is... " + spinner_diet.getItemAtPosition(adapter1.getPosition(um.getUser().getDiet())));
-
-        spinner_diet.setSelection(2);
-        spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet()));
-        if (!spinner_diet.getSelectedItem().toString().equals(um.getUser().getDiet())) {
-            System.out.println("????????????");
-        }
-        System.out.println("This user's diet IIIS... " + um.getUser().getDiet());
-
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
-        R.array.prefs, R.layout.spinner_layout);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_low_carbon.setAdapter(adapter2);
-        if (um.getUser().getLowCarbon()) {
-            spinner_low_carbon.setSelection(0);
-        } else {
-            spinner_low_carbon.setSelection(1);
-        }
-
         spinner_diet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                um.getUser().setDiet(spinner_diet.getItemAtPosition(position).toString());
+                if (!diet_initialized) {
+                    spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet()));
+                    diet_initialized = true;
+                } else {
+                    um.getUser().setDiet(spinner_diet.getItemAtPosition(position).toString());
+                }
             }
             @Override
             // If nothing is selected, the item is set to the user's saved setting
             public void onNothingSelected(AdapterView<?> parent) { spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet())); }
+
         });
 
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
+                R.array.prefs, R.layout.spinner_layout);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_low_carbon.setAdapter(adapter2);
         spinner_low_carbon.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (spinner_low_carbon.getItemAtPosition(position).toString().equals("Yes")) {
-                    um.getUser().setLowCarbon(true);
+                if (!low_carbon_initialized) {
+                    if (um.getUser().getLowCarbon()) {
+                        spinner_low_carbon.setSelection(0);
+                    } else {
+                        spinner_low_carbon.setSelection(1);
+                    }
+                    low_carbon_initialized = true;
                 } else {
-                    um.getUser().setLowCarbon(false);
+                    if (spinner_low_carbon.getItemAtPosition(position).toString().equals("Yes")) {
+                        um.getUser().setLowCarbon(true);
+                    } else {
+                        um.getUser().setLowCarbon(false);
+                    }
                 }
             }
             @Override
