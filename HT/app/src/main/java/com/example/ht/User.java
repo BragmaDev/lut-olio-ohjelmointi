@@ -6,14 +6,16 @@ import java.util.ArrayList;
 public class User implements Serializable {
 
     private String name;
+    private String password;
     private float weight;
     private String diet;
     private boolean low_carbon;
     private ArrayList<Entry> climate_diet_entries;
     private ArrayList<Entry> weight_entries;
 
-    public User(String name) {
+    public User(String name, String password) {
         this.name = name;
+        this.password = password;
         climate_diet_entries = new ArrayList<>();
         weight_entries = new ArrayList<>();
         weight = 60.0f;
@@ -22,6 +24,7 @@ public class User implements Serializable {
     }
 
     public String getName() { return name; }
+    public String getPassword() { return password; }
     public float getWeight() { return weight; }
     public String getDiet() { return diet; }
     public void setDiet(String diet) { this.diet = diet; }

@@ -37,7 +37,7 @@ public class UserSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         text_title = (TextView) view.findViewById(R.id.textTitle);
-        button_change = (Button) view.findViewById(R.id.buttonChange);
+        button_change = (Button) view.findViewById(R.id.buttonLogIn);
         text_weight = (TextView) view.findViewById(R.id.textWeight);
         spinner_diet = (Spinner) view.findViewById(R.id.spinnerDiet);
         spinner_low_carbon = (Spinner) view.findViewById(R.id.spinnerLowCarbon);
@@ -50,11 +50,24 @@ public class UserSettingsFragment extends Fragment {
         R.array.diets, R.layout.spinner_layout);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_diet.setAdapter(adapter1);
+        System.out.println("The item at currpos is... " + spinner_diet.getItemAtPosition(adapter1.getPosition(um.getUser().getDiet())));
+
+        spinner_diet.setSelection(2);
+        spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet()));
+        if (!spinner_diet.getSelectedItem().toString().equals(um.getUser().getDiet())) {
+            System.out.println("????????????");
+        }
+        System.out.println("This user's diet IIIS... " + um.getUser().getDiet());
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
         R.array.prefs, R.layout.spinner_layout);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_low_carbon.setAdapter(adapter2);
+        if (um.getUser().getLowCarbon()) {
+            spinner_low_carbon.setSelection(0);
+        } else {
+            spinner_low_carbon.setSelection(1);
+        }
 
         spinner_diet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -86,6 +99,4 @@ public class UserSettingsFragment extends Fragment {
             }
         });
     }
-
-
 }

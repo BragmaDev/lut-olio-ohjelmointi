@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment entry_fragment;
     Fragment co2_fragment;
     Fragment user_settings_fragment;
+    Fragment login_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         entry_fragment = new EntryFragment();
         co2_fragment = new CO2Fragment(this);
         user_settings_fragment = new UserSettingsFragment(this);
+        login_fragment = new LoginFragment(this);
 
         frag_manager = getSupportFragmentManager();
         frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment);
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
+            frag_manager.beginTransaction().replace(R.id.frag_container, login_fragment).commit();
             nav_view.setCheckedItem(R.id.home);
         }
 
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         } else if (item.getItemId() == R.id.settings) {
             frag_manager.beginTransaction().replace(R.id.frag_container, user_settings_fragment).commit();
+        } else if (item.getItemId() == R.id.account){
+            frag_manager.beginTransaction().replace(R.id.frag_container, login_fragment).commit();
         } else {
             frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         }
