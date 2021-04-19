@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             frag = user_settings_fragment;
         } else if (frag_name.equals("co2")) {
             frag = co2_fragment;
+        } else if (frag_name.equals("login")) {
+            frag = login_fragment;
         } else {
             frag = co2_fragment;
         }

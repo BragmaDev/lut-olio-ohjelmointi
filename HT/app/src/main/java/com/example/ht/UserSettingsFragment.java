@@ -1,5 +1,7 @@
 package com.example.ht;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ public class UserSettingsFragment extends Fragment {
     TextView text_weight;
     Spinner spinner_diet;
     Spinner spinner_low_carbon;
+    Button button_delete;
 
     boolean diet_initialized;
     boolean low_carbon_initialized;
@@ -46,6 +49,7 @@ public class UserSettingsFragment extends Fragment {
         text_weight = (TextView) view.findViewById(R.id.textWeight);
         spinner_diet = (Spinner) view.findViewById(R.id.spinnerDiet);
         spinner_low_carbon = (Spinner) view.findViewById(R.id.spinnerLowCarbon);
+        button_delete = (Button) view.findViewById(R.id.buttonDelete);
 
         /* These booleans are used to prevent the spinners' setOnItemSelectedListeners from activating
         immediately when opening the fragment */
@@ -108,5 +112,28 @@ public class UserSettingsFragment extends Fragment {
                 }
             }
         });
+
+        button_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show_confirmation_dialog();
+            }
+        });
+    }
+
+    private void show_confirmation_dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Are you sure you want to delete this account?")
+                .setTitle("Confirmation")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        um.removeUser();
+                        main.changeFragment("login");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {}
+                });
+        builder.create().show();
     }
 }
