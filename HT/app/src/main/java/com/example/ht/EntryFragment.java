@@ -146,6 +146,7 @@ public class EntryFragment extends Fragment {
             em.sortEntries(um.getUser().getEntries(0));
             resetInputs();
             text_reminder.setText("");
+            um.saveUsers();
         }
     }
 }

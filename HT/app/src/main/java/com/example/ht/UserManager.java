@@ -1,19 +1,32 @@
 package com.example.ht;
 
+import android.content.Context;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class UserManager {
 
+    Context context;
     private User user;
     private ArrayList<User> users = new ArrayList<>();
+    final String users_filename = "users.json";
 
     private static UserManager um = new UserManager();
     private UserManager() {}
     public static UserManager getInstance() { return um; }
 
+    public void setContext(Context context) { this.context = context; }
+
     public void createUser(String name, String password) {
         User new_user = new User(name, password);
         users.add(new_user);
+        saveUsers();
     }
 
     public boolean switchUser(String name, String password) {
@@ -33,10 +46,47 @@ public class UserManager {
         User previous_user = user;
         user = null;
         users.remove(previous_user);
+        saveUsers();
     }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
     public ArrayList<User> getUsers() { return users; }
+
+    public void saveUsers() {
+        if (context != null) {
+            try {
+                FileOutputStream fos = context.openFileOutput(users_filename, Context.MODE_PRIVATE);
+                ObjectOutputStream os = new ObjectOutputStream(fos);
+                os.writeObject(users);
+                os.close();
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void loadUsers() {
+        try {
+            System.out.println("LOADING...");
+            FileInputStream fis = context.openFileInput(users_filename);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            users = (ArrayList<User>) is.readObject();
+            is.close();
+            fis.close();
+            System.out.println("LOADED!");
+            System.out.println(users.size());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

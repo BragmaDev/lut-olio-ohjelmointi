@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment user_settings_fragment;
     Fragment login_fragment;
 
+    UserManager um = UserManager.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         context = MainActivity.this;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        um.setContext(context);
+        um.loadUsers();
 
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

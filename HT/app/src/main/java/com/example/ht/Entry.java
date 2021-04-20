@@ -1,8 +1,9 @@
 package com.example.ht;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Entry {
+public abstract class Entry implements Serializable {
 
     protected Date date;
 

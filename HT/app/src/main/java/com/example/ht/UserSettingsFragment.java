@@ -57,7 +57,7 @@ public class UserSettingsFragment extends Fragment {
         low_carbon_initialized = false;
 
         text_title.setText(um.getUser().getName());
-        text_weight.setText(Float.toString(um.getUser().getWeight()) + " kg");
+        text_weight.setText(um.getUser().getWeight() + " kg");
 
         // Setting up the spinners
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
@@ -72,6 +72,7 @@ public class UserSettingsFragment extends Fragment {
                     diet_initialized = true;
                 } else {
                     um.getUser().setDiet(spinner_diet.getItemAtPosition(position).toString());
+                    um.saveUsers();
                 }
             }
             @Override
@@ -100,6 +101,7 @@ public class UserSettingsFragment extends Fragment {
                     } else {
                         um.getUser().setLowCarbon(false);
                     }
+                    um.saveUsers();
                 }
             }
             @Override
