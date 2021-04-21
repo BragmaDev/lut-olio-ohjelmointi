@@ -1,5 +1,10 @@
 package com.example.ht;
 
+import android.content.Context;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -7,12 +12,17 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,6 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class EntryManager {
 
+    Context context = null;
     private ClimateDietEntry entry = null;
 
     private String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
@@ -34,6 +45,8 @@ public class EntryManager {
     public static EntryManager getInstance() { return em; }
 
     UserManager um = UserManager.getInstance();
+
+    public void setContext(Context context) { this.context = context; }
 
     private void constructTail(int cons[]) {
         req_url_tail = ("?query.diet=" + um.getUser().getDiet()
@@ -109,5 +122,36 @@ public class EntryManager {
                 return o1.getDate().getTime() > o2.getDate().getTime() ? 1 : -1;
             }
         });
+    }
+
+    public void writeJSON() {
+        JSONObject obj = new JSONObject();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        for (Entry entry : um.getUser().getEntries(0)) {
+            ClimateDietEntry cde = (ClimateDietEntry) entry;
+            try {
+                JSONArray arr = new JSONArray();
+                arr.put("Dairy: " + cde.getEmissions()[0] + " kg");
+                arr.put("Meat: " + cde.getEmissions()[1] + "kg");
+                arr.put("Plant: " + cde.getEmissions()[2] + "kg");
+                arr.put("Restaurant: " + cde.getEmissions()[3] + "kg");
+                arr.put("Total: " + cde.getEmissions()[4] + "kg");
+                obj.put(sdf.format(entry.getDate()), arr);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            FileOutputStream fos = context.openFileOutput(um.getUser().getName() + "_log.json", Context.MODE_PRIVATE);
+            byte b[] = obj.toString(4).getBytes();
+            fos.write(b);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

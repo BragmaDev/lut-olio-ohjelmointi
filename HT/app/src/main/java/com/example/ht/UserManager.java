@@ -15,7 +15,7 @@ public class UserManager {
     Context context;
     private User user;
     private ArrayList<User> users = new ArrayList<>();
-    final String users_filename = "users.json";
+    final String users_filename = "users.txt";
 
     private static UserManager um = new UserManager();
     private UserManager() {}

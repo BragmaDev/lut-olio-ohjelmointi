@@ -34,6 +34,7 @@ public class CO2Fragment extends Fragment {
     GraphView graph;
     Button button_new_entry;
     RecyclerView recycler_log;
+    Button button_export;
 
     public CO2Fragment(MainActivity main) { this.main = main; }
     public CO2Fragment() {}
@@ -101,8 +102,14 @@ public class CO2Fragment extends Fragment {
             @Override
             public void onClick(View v) { switchToEntryFragment(); }
         });
+        button_export = (Button) view.findViewById(R.id.buttonExport);
+        button_export.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exportLog();
+            }
+        });
         setRecyclerAdapter();
-        System.out.println("Date log: " + date_log.size() + " Emission log: " + emission_log.size());
     }
 
     private void setRecyclerAdapter() {
@@ -117,7 +124,9 @@ public class CO2Fragment extends Fragment {
         main.changeFragment("entry");
     }
 
-
+    private void exportLog() {
+        em.writeJSON();
+    }
 
 
 }

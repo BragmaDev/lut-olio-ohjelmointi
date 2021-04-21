@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment login_fragment;
 
     UserManager um = UserManager.getInstance();
+    EntryManager em = EntryManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StrictMode.setThreadPolicy(policy);
         um.setContext(context);
         um.loadUsers();
+        em.setContext(context);
 
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

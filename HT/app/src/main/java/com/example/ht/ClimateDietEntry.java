@@ -1,7 +1,5 @@
 package com.example.ht;
 
-import java.util.Date;
-
 public class ClimateDietEntry extends Entry {
     private double dairy_emission;
     private double meat_emission;
