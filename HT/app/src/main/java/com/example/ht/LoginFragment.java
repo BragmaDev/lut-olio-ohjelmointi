@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class LoginFragment extends Fragment {
     View view;
     MainActivity main = null;
     UserManager um = UserManager.getInstance();
+    PasswordValidator validator = new PasswordValidator();
     ArrayList<String> usernames = new ArrayList<>();
     String selected_user = "";
 
@@ -29,6 +31,8 @@ public class LoginFragment extends Fragment {
     EditText edit_login_password;
     EditText edit_new_user;
     EditText edit_new_password;
+    TextView text_login_error;
+    TextView text_create_error;
     Button button_login;
     Button button_create;
 
@@ -48,6 +52,8 @@ public class LoginFragment extends Fragment {
         edit_login_password = (EditText) view.findViewById(R.id.editLoginPassword);
         edit_new_user = (EditText) view.findViewById(R.id.editNewUser);
         edit_new_password = (EditText) view.findViewById(R.id.editNewPassword);
+        text_login_error = (TextView) view.findViewById(R.id.textLoginError);
+        text_create_error = (TextView) view.findViewById(R.id.textCreateError);
         button_login = (Button) view.findViewById(R.id.buttonAddWeight);
         button_create = (Button) view.findViewById(R.id.buttonCreate);
 
@@ -59,7 +65,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selected_user = parent.getItemAtPosition(position).toString();
-                System.out.println(selected_user);
+                edit_login_password.setText("");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { updateUsernames(); }
@@ -85,17 +91,25 @@ public class LoginFragment extends Fragment {
     private void logIn(String username, String password) {
         boolean logged_in = um.switchUser(username, password);
         if (logged_in) {
+            text_login_error.setText("");
             main.changeFragment("co2");
+        } else {
+            text_login_error.setText("Incorrect password");
         }
     }
 
     private void create() {
         if (!usernames.contains(edit_new_user.getText().toString())) {
-            um.createUser(edit_new_user.getText().toString(), edit_new_password.getText().toString());
-            edit_new_user.setText("");
-            edit_new_password.setText("");
+            if (validator.validate(edit_new_password.getText().toString())) {
+                um.createUser(edit_new_user.getText().toString(), edit_new_password.getText().toString());
+                edit_new_user.setText("");
+                edit_new_password.setText("");
+                text_create_error.setText("");
+            } else {
+                text_create_error.setText("Invalid password");
+            }
         } else {
-            System.out.println("User already exists!");
+            text_create_error.setText("A user with that name already exists");
         }
         updateUsernames();
     }
