@@ -25,6 +25,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class WeightFragment extends Fragment {
@@ -87,6 +88,7 @@ public class WeightFragment extends Fragment {
                         em.getEntry().setDate(selected_date);
                         um.getUser().addEntry(em.getEntry());
                         em.sortEntries(um.getUser().getEntries(1));
+                        um.setUserWeight();
                         updateLog();
                         updateGraph();
                         setRecyclerAdapter();
@@ -154,6 +156,9 @@ public class WeightFragment extends Fragment {
                 }
             }
         }
+
+        Collections.reverse(date_log);
+        Collections.reverse(weight_log);
     }
 
     private void updateGraph() {

@@ -7,7 +7,7 @@ public class User implements Serializable {
 
     private String name;
     private String password;
-    private float weight;
+    private double weight;
     private String diet;
     private boolean low_carbon;
     private ArrayList<Entry> climate_diet_entries;
@@ -25,7 +25,8 @@ public class User implements Serializable {
 
     public String getName() { return name; }
     public String getPassword() { return password; }
-    public float getWeight() { return weight; }
+    public double getWeight() { return weight; }
+    public void setWeight(double weight) { this.weight = weight; }
     public String getDiet() { return diet; }
     public void setDiet(String diet) { this.diet = diet; }
     public boolean getLowCarbon() { return low_carbon; }
@@ -35,13 +36,6 @@ public class User implements Serializable {
             return climate_diet_entries;
         } else {
             return weight_entries;
-        }
-    }
-    public void setEntries(int arraylist_id, ArrayList<Entry> entries) {
-        if (arraylist_id == 0) {
-            climate_diet_entries = entries;
-        } else {
-            weight_entries = entries;
         }
     }
 

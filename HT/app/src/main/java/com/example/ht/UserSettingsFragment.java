@@ -113,6 +113,13 @@ public class UserSettingsFragment extends Fragment {
             }
         });
 
+        button_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.changeFragment("weight");
+            }
+        });
+
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

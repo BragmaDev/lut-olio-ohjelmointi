@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserManager {
 
@@ -86,7 +87,16 @@ public class UserManager {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
+    public void setUserWeight() {
+        WeightEntry latest_entry = null;
+        for (Entry e : user.getEntries(1)) {
+            if (latest_entry == null || e.getDate().getTime() > latest_entry.getDate().getTime()) {
+                latest_entry = (WeightEntry) e;
+            }
+        }
+        user.setWeight(latest_entry.getWeight());
     }
 
 }

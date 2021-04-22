@@ -20,6 +20,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CO2Fragment extends Fragment {
 
@@ -52,7 +53,6 @@ public class CO2Fragment extends Fragment {
         // Resetting the log
         date_log.clear();
         emission_log.clear();
-
         if (um.getUser().getEntries(0).size() > 0) {
             for (Entry e : um.getUser().getEntries(0)) {
                 if (e instanceof ClimateDietEntry) {
@@ -61,6 +61,8 @@ public class CO2Fragment extends Fragment {
                 }
             }
         }
+        Collections.reverse(date_log);
+        Collections.reverse(emission_log);
 
         // Graph setup
         graph = (GraphView) view.findViewById(R.id.graph);
