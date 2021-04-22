@@ -1,5 +1,6 @@
 package com.example.ht;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -33,6 +35,7 @@ public class CO2Fragment extends Fragment {
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     GraphView graph;
+    Button button_toggle;
     Button button_new_entry;
     RecyclerView recycler_log;
     Button button_export;
@@ -49,6 +52,11 @@ public class CO2Fragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        graph = (GraphView) view.findViewById(R.id.graph);
+        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogWeight);
+        button_toggle = (Button) view.findViewById(R.id.buttonToggle);
+        button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
+        button_export = (Button) view.findViewById(R.id.buttonExport);
 
         // Resetting the log
         date_log.clear();
@@ -64,47 +72,19 @@ public class CO2Fragment extends Fragment {
         Collections.reverse(date_log);
         Collections.reverse(emission_log);
 
-        // Graph setup
-        graph = (GraphView) view.findViewById(R.id.graph);
-        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(0).size()];
-        for (int i = 0; i < um.getUser().getEntries(0).size(); i++) {
-            ClimateDietEntry e = (ClimateDietEntry) um.getUser().getEntries(0).get(i);
-            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[4]);
-        }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
-        series.setColor(getResources().getColor(R.color.green_500, null));
-        GridLabelRenderer glr = graph.getGridLabelRenderer();
-        glr.setHorizontalAxisTitle("Date");
-        glr.setHorizontalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        glr.setVerticalAxisTitle("Emission");
-        glr.setVerticalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        glr.setVerticalLabelsVisible(false);
-        glr.setHorizontalLabelsVisible(false);
-        glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0.0);
-        if (datapoints.length > 0) {
-            graph.getViewport().setMinX(datapoints[0].getX());
-            graph.getViewport().setMaxX(datapoints[datapoints.length - 1].getX());
-            for (DataPoint datapoint : datapoints) {
-                if (graph.getViewport().getMaxY(false) < datapoint.getY()) {
-                    graph.getViewport().setMaxY(datapoint.getY());
-                }
+        GraphManager gm = new GraphManager(main);
+        gm.setUpGraph(graph);
+
+        button_toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gm.toggleAdvanced(graph);
             }
-        } else {
-            graph.getViewport().setMaxX(1);
-            graph.getViewport().setMaxY(1);
-        }
-        graph.addSeries(series);
-        
-        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogWeight);
-        button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
+        });
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { switchToEntryFragment(); }
         });
-        button_export = (Button) view.findViewById(R.id.buttonExport);
         button_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

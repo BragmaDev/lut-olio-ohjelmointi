@@ -13,4 +13,5 @@
     <color name="green_500">#4caf50</color>
     <color name="green_dark">#087f23</color>
     <color name="red_600">#e53935</color>
+    <color name="amber_500">#ffc107</color>
 </resources>
