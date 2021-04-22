@@ -96,8 +96,8 @@ public class CO2Fragment extends Fragment {
         }
         graph.addSeries(series);
         
-        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogCO2);
-        button_new_entry = (Button) view.findViewById(R.id.buttonLogIn);
+        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogWeight);
+        button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { switchToEntryFragment(); }

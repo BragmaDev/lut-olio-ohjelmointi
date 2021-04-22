@@ -12,21 +12,21 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.AdapterViewHolder> {
     private ArrayList<String> dates;
-    private ArrayList<Double> emissions;
+    private ArrayList<Double> values;
 
-    public RecyclerAdapter(ArrayList<String> dates, ArrayList<Double> emissions) {
+    public RecyclerAdapter(ArrayList<String> dates, ArrayList<Double> values) {
         this.dates = dates;
-        this.emissions = emissions;
+        this.values = values;
     }
 
     public class AdapterViewHolder extends RecyclerView.ViewHolder {
         private TextView text_date;
-        private TextView text_emission;
+        private TextView text_value;
 
         public AdapterViewHolder(final View view) {
             super(view);
             text_date = (TextView) view.findViewById(R.id.textTitle);
-            text_emission = (TextView) view.findViewById(R.id.textEmission);
+            text_value = (TextView) view.findViewById(R.id.textValue);
         }
     }
 
@@ -40,9 +40,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Adapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.AdapterViewHolder holder, int position) {
         String date = dates.get(position);
-        double emission = emissions.get(position);
+        double value = values.get(position);
         holder.text_date.setText(date);
-        holder.text_emission.setText(String.format("%.2f", emission) + " kg");
+        holder.text_value.setText(String.format("%.2f", value) + " kg");
     }
 
     @Override

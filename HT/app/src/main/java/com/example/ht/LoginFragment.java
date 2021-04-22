@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
         edit_login_password = (EditText) view.findViewById(R.id.editLoginPassword);
         edit_new_user = (EditText) view.findViewById(R.id.editNewUser);
         edit_new_password = (EditText) view.findViewById(R.id.editNewPassword);
-        button_login = (Button) view.findViewById(R.id.buttonLogIn);
+        button_login = (Button) view.findViewById(R.id.buttonAddWeight);
         button_create = (Button) view.findViewById(R.id.buttonCreate);
 
         // Spinner setup

@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
-
 public class UserSettingsFragment extends Fragment {
     View view;
     MainActivity main = null;
@@ -45,7 +43,7 @@ public class UserSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         text_title = (TextView) view.findViewById(R.id.textTitle);
-        button_change = (Button) view.findViewById(R.id.buttonLogIn);
+        button_change = (Button) view.findViewById(R.id.buttonAddWeight);
         text_weight = (TextView) view.findViewById(R.id.textWeight);
         spinner_diet = (Spinner) view.findViewById(R.id.spinnerDiet);
         spinner_low_carbon = (Spinner) view.findViewById(R.id.spinnerLowCarbon);

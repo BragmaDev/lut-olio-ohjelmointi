@@ -35,7 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class EntryManager {
 
     Context context = null;
-    private ClimateDietEntry entry = null;
+    private Entry entry = null;
 
     private String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
     private String req_url_tail = "";
@@ -100,20 +100,10 @@ public class EntryManager {
         }
 
         entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
-        printInfo();
     }
 
-    public ClimateDietEntry getEntry() { return entry; }
-
-    private void printInfo() {
-        System.out.println("Entry's date: " + entry.getDate() + "##########################");
-        System.out.println(entry.getEmissions()[0] + " | "
-        + entry.getEmissions()[1] + " | "
-        + entry.getEmissions()[2] + " | "
-        + entry.getEmissions()[3] + " | "
-        + entry.getEmissions()[4]
-        );
-    }
+    public Entry getEntry() { return entry; }
+    public void setEntry(Entry entry) { this.entry = entry; }
 
     public void sortEntries(ArrayList<Entry> entries) {
         Collections.sort(entries, new Comparator<Entry>() {

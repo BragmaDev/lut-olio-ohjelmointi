@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment co2_fragment;
     Fragment user_settings_fragment;
     Fragment login_fragment;
+    Fragment weight_fragment;
 
     UserManager um = UserManager.getInstance();
     EntryManager em = EntryManager.getInstance();
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         co2_fragment = new CO2Fragment(this);
         user_settings_fragment = new UserSettingsFragment(this);
         login_fragment = new LoginFragment(this);
+        weight_fragment = new WeightFragment(this);
 
         frag_manager = getSupportFragmentManager();
         frag_manager.beginTransaction().replace(R.id.frag_container, entry_fragment);
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             frag_manager.beginTransaction().replace(R.id.frag_container, user_settings_fragment).commit();
         } else if (item.getItemId() == R.id.account){
             frag_manager.beginTransaction().replace(R.id.frag_container, login_fragment).commit();
+        } else if (item.getItemId() == R.id.weight) {
+            frag_manager.beginTransaction().replace(R.id.frag_container, weight_fragment).commit();
         } else {
             frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         }
@@ -99,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             frag = co2_fragment;
         } else if (frag_name.equals("login")) {
             frag = login_fragment;
+        } else if (frag_name.equals("weight")) {
+            frag = weight_fragment;
         } else {
             frag = co2_fragment;
         }
