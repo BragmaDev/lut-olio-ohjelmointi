@@ -180,7 +180,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Beef consumption"
@@ -325,6 +325,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed"
         android:hint="(0-800)"
         android:inputType="number"
         android:textColor="@color/grey_50"
@@ -341,6 +342,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed"
         android:hint="(0-1100)"
         android:inputType="number"
         android:textColor="@color/grey_50"
@@ -358,6 +360,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed"
         android:hint="Set date"
         android:inputType="date"
         android:textColor="@color/grey_50"
@@ -386,5 +389,22 @@
         android:textColor="@color/green_500"
         app:layout_constraintBottom_toTopOf="@+id/editDate"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textConsumption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="- kg/week"
+        android:textAlignment="textStart"
+        android:textColor="@color/grey_50"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/textBeef"
+        app:layout_constraintEnd_toStartOf="@+id/space"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSubtitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

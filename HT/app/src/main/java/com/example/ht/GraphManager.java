@@ -24,6 +24,8 @@ public class GraphManager {
 
     public GraphManager(MainActivity main) { this.main = main; }
 
+    /* This method creates the datapoint arrays based on the user's entry log and does all the
+    styling for the graph view (passed in as a parameter) of the CO2 emission fragment */
     public void setUpGraph(GraphView graph) {
         advanced_graph_toggled = false;
         DataPoint[] datapoints_dairy = new DataPoint[um.getUser().getEntries(0).size()];
@@ -34,11 +36,11 @@ public class GraphManager {
 
         for (int i = 0; i < um.getUser().getEntries(0).size(); i++) {
             ClimateDietEntry e = (ClimateDietEntry) um.getUser().getEntries(0).get(i);
-            datapoints_dairy[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[0]);
-            datapoints_meat[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[1]);
-            datapoints_plant[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[2]);
-            datapoints_restaurant[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[3]);
-            datapoints_total[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getEmissions()[4]);
+            datapoints_dairy[i] = new DataPoint(e.getDate().getTime(), e.getEmissions()[0]);
+            datapoints_meat[i] = new DataPoint(e.getDate().getTime(), e.getEmissions()[1]);
+            datapoints_plant[i] = new DataPoint(e.getDate().getTime(), e.getEmissions()[2]);
+            datapoints_restaurant[i] = new DataPoint(e.getDate().getTime(), e.getEmissions()[3]);
+            datapoints_total[i] = new DataPoint(e.getDate().getTime(), e.getEmissions()[4]);
         }
 
         series_dairy = new LineGraphSeries<DataPoint>(datapoints_dairy);
@@ -93,6 +95,8 @@ public class GraphManager {
         graph.addSeries(series_total);
     }
 
+    /* This method takes in the graph view as a parameter, toggles the additional graphs for the
+    different emission types and makes the legend visible or invisible */
     public void toggleAdvanced(GraphView graph) {
         advanced_graph_toggled = !advanced_graph_toggled;
         if (advanced_graph_toggled) {
@@ -108,12 +112,14 @@ public class GraphManager {
         }
     }
 
+    /* This method sets up the weight fragment's graph view (passed in as a parameter) and is used
+    to update it */
     public void updateWeightGraph(GraphView graph) {
         graph.removeAllSeries();
         DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(1).size()];
         for (int i = 0; i < um.getUser().getEntries(1).size(); i++) {
             WeightEntry e = (WeightEntry) um.getUser().getEntries(1).get(i);
-            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getWeight());
+            datapoints[i] = new DataPoint(e.getDate().getTime(), e.getWeight());
         }
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
         series.setColor(main.getResources().getColor(R.color.green_500, null));

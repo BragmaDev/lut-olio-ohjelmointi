@@ -70,7 +70,7 @@ public class UserSettingsFragment extends Fragment {
                     diet_initialized = true;
                 } else {
                     um.getUser().setDiet(spinner_diet.getItemAtPosition(position).toString());
-                    um.saveUsers();
+                    um.saveUsers(main.getApplicationContext());
                 }
             }
             @Override
@@ -99,7 +99,7 @@ public class UserSettingsFragment extends Fragment {
                     } else {
                         um.getUser().setLowCarbon(false);
                     }
-                    um.saveUsers();
+                    um.saveUsers(main.getApplicationContext());
                 }
             }
             @Override
@@ -123,18 +123,19 @@ public class UserSettingsFragment extends Fragment {
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show_confirmation_dialog();
+                showConfirmationDialog();
             }
         });
     }
 
-    private void show_confirmation_dialog() {
+    // This method shows a confirmation dialog to confirm if the user wants to delete their account
+    private void showConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Are you sure you want to delete this account?")
                 .setTitle("Confirmation")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        um.removeUser();
+                        um.removeUser(main.getApplicationContext());
                         main.changeFragment("login");
                     }
                 })

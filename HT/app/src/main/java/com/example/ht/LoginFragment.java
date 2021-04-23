@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class LoginFragment extends Fragment {
 
     View view;
-    MainActivity main = null;
+    MainActivity main;
     UserManager um = UserManager.getInstance();
     PasswordValidator validator = new PasswordValidator();
     ArrayList<String> usernames = new ArrayList<>();
@@ -37,7 +37,6 @@ public class LoginFragment extends Fragment {
     Button button_create;
 
     public LoginFragment(MainActivity main) { this.main = main; }
-    public LoginFragment() {}
 
     @Nullable
     @Override
@@ -88,6 +87,8 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    /* This method attempts to log the user in using the inputted name and password and shows the
+    error text in case the password is wrong */
     private void logIn(String username, String password) {
         boolean logged_in = um.switchUser(username, password);
         if (logged_in) {
@@ -98,22 +99,29 @@ public class LoginFragment extends Fragment {
         }
     }
 
+    /* This method attempts to create a new user based on the inputted name and password and shows
+    the error text in case the username is taken, empty or if the password doesn't meet the criteria */
     private void create() {
-        if (!usernames.contains(edit_new_user.getText().toString())) {
-            if (validator.validate(edit_new_password.getText().toString())) {
-                um.createUser(edit_new_user.getText().toString(), edit_new_password.getText().toString());
-                edit_new_user.setText("");
-                edit_new_password.setText("");
-                text_create_error.setText("");
+        if (!edit_new_user.getText().toString().isEmpty()) {
+            if (!usernames.contains(edit_new_user.getText().toString())) {
+                if (validator.validate(edit_new_password.getText().toString())) {
+                    um.createUser(edit_new_user.getText().toString(), edit_new_password.getText().toString(), main.getApplicationContext());
+                    edit_new_user.setText("");
+                    edit_new_password.setText("");
+                    text_create_error.setText("");
+                } else {
+                    text_create_error.setText("Invalid password");
+                }
             } else {
-                text_create_error.setText("Invalid password");
+                text_create_error.setText("A user with that name already exists");
             }
         } else {
-            text_create_error.setText("A user with that name already exists");
+            text_create_error.setText("Please enter a valid name");
         }
         updateUsernames();
     }
 
+    // This method updates the username arraylist and notifies the spinner
     private void updateUsernames() {
         usernames.clear();
         if (um.getUsers().size() > 0) {

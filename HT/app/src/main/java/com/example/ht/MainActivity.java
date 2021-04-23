@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment weight_fragment;
 
     UserManager um = UserManager.getInstance();
-    EntryManager em = EntryManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +43,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         context = MainActivity.this;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        um.setContext(context);
-        um.loadUsers();
-        em.setContext(context);
+        um.loadUsers(context);
 
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         nav_view = findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
 
-        entry_fragment = new EntryFragment();
+        entry_fragment = new EntryFragment(this);
         co2_fragment = new CO2Fragment(this);
         user_settings_fragment = new UserSettingsFragment(this);
         login_fragment = new LoginFragment(this);
@@ -73,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    // This method changes the fragment when an item is selected in the side menu
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == R.id.co2_emission) {
             frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
         } else if (item.getItemId() == R.id.settings) {
@@ -92,21 +89,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // This method changes the fragment based on the string parameter
     @Override
     public void changeFragment(String frag_name) {
-        Fragment frag = null;
-        if (frag_name.equals("entry")) {
-            frag = entry_fragment;
-        } else if (frag_name.equals("settings")) {
-            frag = user_settings_fragment;
-        } else if (frag_name.equals("co2")) {
-            frag = co2_fragment;
-        } else if (frag_name.equals("login")) {
-            frag = login_fragment;
-        } else if (frag_name.equals("weight")) {
-            frag = weight_fragment;
-        } else {
-            frag = co2_fragment;
+        Fragment frag;
+        switch (frag_name) {
+            case "entry":
+                frag = entry_fragment;
+                break;
+            case "settings":
+                frag = user_settings_fragment;
+                break;
+            case "co2":
+                frag = co2_fragment;
+                break;
+            case "login":
+                frag = login_fragment;
+                break;
+            case "weight":
+                frag = weight_fragment;
+                break;
+            default:
+                frag = co2_fragment;
+                break;
         }
         frag_manager.beginTransaction().replace(R.id.frag_container, frag).commit();
     }

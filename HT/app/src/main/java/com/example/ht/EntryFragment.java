@@ -23,9 +23,11 @@ import java.util.Date;
 
 public class EntryFragment extends Fragment {
 
+    MainActivity main = null;
     EntryManager em = EntryManager.getInstance();
     UserManager um = UserManager.getInstance();
     View view;
+    TextView text_consumption;
     SeekBar seek_beef;
     SeekBar seek_fish;
     SeekBar seek_pork;
@@ -39,7 +41,9 @@ public class EntryFragment extends Fragment {
     Date selected_date;
     TextView text_reminder;
     Button button_add;
-    int[] cons = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] cons = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // Array for consumption inputs
+
+    public EntryFragment(MainActivity main) { this.main = main; }
 
     @Nullable
     @Override
@@ -50,6 +54,7 @@ public class EntryFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        text_consumption = (TextView) view.findViewById(R.id.textConsumption);
         (seek_beef = (SeekBar) view.findViewById(R.id.seekBeef)).setMax(200);
         (seek_fish = (SeekBar) view.findViewById(R.id.seekFish)).setMax(200);
         (seek_pork = (SeekBar) view.findViewById(R.id.seekPork)).setMax(200);
@@ -60,6 +65,67 @@ public class EntryFragment extends Fragment {
         edit_restaurant = (EditText) view.findViewById(R.id.editRestaurant);
         edit_eggs = (EditText) view.findViewById(R.id.editEggs);
         edit_date = (EditText) view.findViewById(R.id.editDate);
+        button_add = (Button) view.findViewById(R.id.buttonAdd);
+        (text_reminder = (TextView) view.findViewById(R.id.textReminder)).setText("");
+
+        // Setting the seek bars to update the consumption text
+        seek_beef.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Beef: %.2f kg/week", progress * 0.01 * 0.4));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_fish.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Fish: %.2f kg/week", progress * 0.01 * 0.6));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_pork.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Pork and poultry: %.2f kg/week", progress * 0.01));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_dairy.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Dairy: %.2f kg/week", progress * 0.01 * 3.8));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_cheese.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Cheese: %.2f kg/week", progress * 0.01 * 0.3));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_rice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Rice: %.2f kg/week", progress * 0.01 * 0.09));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        seek_wsalad.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                text_consumption.setText(String.format("Winter salad: %.2f kg/week", progress * 0.01 * 1.4));
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
         edit_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +133,10 @@ public class EntryFragment extends Fragment {
             }
         });
         edit_date.setShowSoftInputOnFocus(false);
-        (text_reminder = (TextView) view.findViewById(R.id.textReminder)).setText("");
-        resetInputs();
 
-        button_add = (Button) view.findViewById(R.id.buttonAdd);
+        resetInputs();
+        text_consumption.setText("- kg/week");
+
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { addEntry(); }
@@ -112,6 +178,7 @@ public class EntryFragment extends Fragment {
         }
     }
 
+    // This method opens up the date picker
     private void showDateDialog() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -135,6 +202,8 @@ public class EntryFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    /* This method creates a new entry with the currently inputted values, resets the inputs and
+    changes back to the CO2 fragment */
     private void addEntry() {
         if (selected_date == null) {
             text_reminder.setText("Please select a date");
@@ -146,7 +215,8 @@ public class EntryFragment extends Fragment {
             em.sortEntries(um.getUser().getEntries(0));
             resetInputs();
             text_reminder.setText("");
-            um.saveUsers();
+            um.saveUsers(main.getApplicationContext());
+            main.changeFragment("co2");
         }
     }
 }

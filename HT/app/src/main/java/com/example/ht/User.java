@@ -39,6 +39,8 @@ public class User implements Serializable {
         }
     }
 
+    /* This method adds the passed Entry object to either the climate diet entries or the weight entries
+    arraylist */
     public void addEntry(Entry entry) {
         if (entry instanceof ClimateDietEntry) {
             // Checking if the same date has an entry

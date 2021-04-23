@@ -50,7 +50,6 @@ public class WeightFragment extends Fragment {
     Date selected_date;
 
     public WeightFragment(MainActivity main) { this.main = main; }
-    public WeightFragment() {}
 
     @Nullable
     @Override
@@ -70,15 +69,17 @@ public class WeightFragment extends Fragment {
         edit_weight = (EditText) view.findViewById(R.id.editWeight);
         edit_date = (EditText) view.findViewById(R.id.editDateWeight);
         edit_date.setShowSoftInputOnFocus(false);
+        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogWeight);
+        text_reminder = (TextView) view.findViewById(R.id.textReminderWeight);
+        button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
+        button_export = (Button) view.findViewById(R.id.buttonExport);
+
         edit_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateDialog();
             }
         });
-        recycler_log = (RecyclerView) view.findViewById(R.id.recyclerLogWeight);
-        text_reminder = (TextView) view.findViewById(R.id.textReminderWeight);
-        button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +96,7 @@ public class WeightFragment extends Fragment {
                         setRecyclerAdapter();
                         resetInputs();
                         text_reminder.setText("");
-                        um.saveUsers();
+                        um.saveUsers(main.getApplicationContext());
                     } else {
                         text_reminder.setText("Please select a date");
                     }
@@ -104,16 +105,16 @@ public class WeightFragment extends Fragment {
                 }
             }
         });
-        button_export = (Button) view.findViewById(R.id.buttonExport);
         button_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                em.writeJSON(1);
+                em.writeJSON(1, main.getApplicationContext());
             }
         });
         setRecyclerAdapter();
     }
 
+    // This method shows the date picker
     private void showDateDialog() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -137,6 +138,7 @@ public class WeightFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    // This method sets up the recycler adapter for the log's recycler view
     private void setRecyclerAdapter() {
         RecyclerAdapter adapter = new RecyclerAdapter(date_log, weight_log);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
@@ -145,10 +147,10 @@ public class WeightFragment extends Fragment {
         recycler_log.setAdapter(adapter);
     }
 
+    // This method resets the helper arraylists used for populating the log's recycler view
     private void updateLog() {
         date_log.clear();
         weight_log.clear();
-
         if (um.getUser().getEntries(1).size() > 0) {
             for (Entry e : um.getUser().getEntries(1)) {
                 if (e instanceof WeightEntry) {
@@ -157,7 +159,6 @@ public class WeightFragment extends Fragment {
                 }
             }
         }
-
         Collections.reverse(date_log);
         Collections.reverse(weight_log);
     }

@@ -34,21 +34,17 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class EntryManager {
 
-    Context context = null;
     private Entry entry = null;
-
-    private String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
     private String req_url_tail = "";
 
-    private static EntryManager em = new EntryManager();
+    private final static EntryManager em = new EntryManager();
     private EntryManager() {}
     public static EntryManager getInstance() { return em; }
 
     UserManager um = UserManager.getInstance();
 
-    public void setContext(Context context) { this.context = context; }
-
-    private void constructTail(int cons[]) {
+    // This method adds the parameters to the request URL based on the user's inputs
+    private void constructTail(int[] cons) {
         req_url_tail = ("?query.diet=" + um.getUser().getDiet()
                 + "&query.lowCarbonPreference=" + um.getUser().getLowCarbon()
                 + "&query.beefLevel=" + cons[0]
@@ -63,30 +59,33 @@ public class EntryManager {
         );
     }
 
-    public void getResponse(int cons[]) {
-        URL url = null;
+    /* This method sends the http request to the climate diet API and gets the response. Afterwards,
+    it calls the "parseResponse" method */
+    public void getResponse(int[] cons) {
+        URL url;
 
         constructTail(cons);
-        System.out.println("Tail: " + req_url_tail + "##################################");
         try {
+            String req_url_head = "https://ilmastodieetti.ymparisto.fi/ilmastodieetti/calculatorapi/v1/FoodCalculator";
             url = new URL(req_url_head + req_url_tail);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String input_line = "";
+            String input_line;
             StringBuffer response = new StringBuffer();
             while ((input_line = in.readLine()) != null) {
                 response.append(input_line);
             }
             in.close();
             parseResponse(response);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /* This method parses the response passed by the "getResponse" method by splitting the string
+    and modifying it to leave only the wanted number values. The values are put into an array,
+    which is used to create a new climate diet entry */
     private void parseResponse(StringBuffer response) {
         String[] s_arr = response.toString().split(",", 5);
         double[] d_arr = {0.0, 0.0, 0.0, 0.0, 0.0};
@@ -102,6 +101,7 @@ public class EntryManager {
         entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
     }
 
+    // Methods for getting and setting the current entry
     public Entry getEntry() { return entry; }
     public void setEntry(Entry entry) { this.entry = entry; }
 
@@ -114,10 +114,13 @@ public class EntryManager {
         });
     }
 
-    public void writeJSON(int arraylist_id) {
+    /* This method takes in the arraylist_id parameter and writes either the climate diet log or the
+    weight log JSON file based on the id (0 = climate diet, anything else = weight). It overwrites
+    the previously written file. */
+    public void writeJSON(int arraylist_id, Context context) {
         JSONObject obj = new JSONObject();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        String filename_tail = "";
+        String filename_tail;
         if (arraylist_id == 0) {
             filename_tail = "_climatediet_log.json";
             for (Entry entry : um.getUser().getEntries(0)) {

@@ -58,7 +58,7 @@ public class CO2Fragment extends Fragment {
         button_new_entry = (Button) view.findViewById(R.id.buttonAddWeight);
         button_export = (Button) view.findViewById(R.id.buttonExport);
 
-        // Resetting the log
+        // Resetting the helper arraylists used for populating the log's recycler view
         date_log.clear();
         emission_log.clear();
         if (um.getUser().getEntries(0).size() > 0) {
@@ -88,12 +88,13 @@ public class CO2Fragment extends Fragment {
         button_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                em.writeJSON(0);
+                em.writeJSON(0, main.getApplicationContext());
             }
         });
         setRecyclerAdapter();
     }
 
+    // This method sets up the recycler adapter for the log's recycler view
     private void setRecyclerAdapter() {
         RecyclerAdapter adapter = new RecyclerAdapter(date_log, emission_log);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
