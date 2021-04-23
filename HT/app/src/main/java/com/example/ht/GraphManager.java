@@ -107,4 +107,39 @@ public class GraphManager {
             graph.getLegendRenderer().setVisible(false);
         }
     }
+
+    public void updateWeightGraph(GraphView graph) {
+        graph.removeAllSeries();
+        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(1).size()];
+        for (int i = 0; i < um.getUser().getEntries(1).size(); i++) {
+            WeightEntry e = (WeightEntry) um.getUser().getEntries(1).get(i);
+            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getWeight());
+        }
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
+        series.setColor(main.getResources().getColor(R.color.green_500, null));
+        GridLabelRenderer glr = graph.getGridLabelRenderer();
+        glr.setHorizontalAxisTitle("Date");
+        glr.setHorizontalAxisTitleColor(main.getResources().getColor(R.color.grey_50, null));
+        glr.setVerticalAxisTitle("Weight");
+        glr.setVerticalAxisTitleColor(main.getResources().getColor(R.color.grey_50, null));
+        glr.setVerticalLabelsVisible(false);
+        glr.setHorizontalLabelsVisible(false);
+        glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0.0);
+        if (datapoints.length > 0) {
+            graph.getViewport().setMinX(datapoints[0].getX());
+            graph.getViewport().setMaxX(datapoints[datapoints.length - 1].getX());
+            for (DataPoint datapoint : datapoints) {
+                if (graph.getViewport().getMaxY(false) < datapoint.getY()) {
+                    graph.getViewport().setMaxY(datapoint.getY());
+                }
+            }
+        } else {
+            graph.getViewport().setMaxX(1);
+            graph.getViewport().setMaxY(1);
+        }
+        graph.addSeries(series);
+    }
 }

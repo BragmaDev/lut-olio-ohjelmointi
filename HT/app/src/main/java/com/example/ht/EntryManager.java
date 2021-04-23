@@ -114,25 +114,39 @@ public class EntryManager {
         });
     }
 
-    public void writeJSON() {
+    public void writeJSON(int arraylist_id) {
         JSONObject obj = new JSONObject();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        for (Entry entry : um.getUser().getEntries(0)) {
-            ClimateDietEntry cde = (ClimateDietEntry) entry;
-            try {
-                JSONArray arr = new JSONArray();
-                arr.put("Dairy: " + cde.getEmissions()[0] + " kg");
-                arr.put("Meat: " + cde.getEmissions()[1] + "kg");
-                arr.put("Plant: " + cde.getEmissions()[2] + "kg");
-                arr.put("Restaurant: " + cde.getEmissions()[3] + "kg");
-                arr.put("Total: " + cde.getEmissions()[4] + "kg");
-                obj.put(sdf.format(entry.getDate()), arr);
-            } catch (JSONException e) {
-                e.printStackTrace();
+        String filename_tail = "";
+        if (arraylist_id == 0) {
+            filename_tail = "_climatediet_log.json";
+            for (Entry entry : um.getUser().getEntries(0)) {
+                ClimateDietEntry cde = (ClimateDietEntry) entry;
+                try {
+                    JSONArray arr = new JSONArray();
+                    arr.put("Dairy: " + cde.getEmissions()[0] + " kg");
+                    arr.put("Meat: " + cde.getEmissions()[1] + "kg");
+                    arr.put("Plant: " + cde.getEmissions()[2] + "kg");
+                    arr.put("Restaurant: " + cde.getEmissions()[3] + "kg");
+                    arr.put("Total: " + cde.getEmissions()[4] + "kg");
+                    obj.put(sdf.format(entry.getDate()), arr);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            filename_tail = "_weight_log.json";
+            for (Entry entry : um.getUser().getEntries(1)) {
+                WeightEntry we = (WeightEntry) entry;
+                try {
+                    obj.put(sdf.format(entry.getDate()), we.getWeight() + " kg");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
         try {
-            FileOutputStream fos = context.openFileOutput(um.getUser().getName() + "_log.json", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(um.getUser().getName() + filename_tail, Context.MODE_PRIVATE);
             byte b[] = obj.toString(4).getBytes();
             fos.write(b);
             fos.close();

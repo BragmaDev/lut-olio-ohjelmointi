@@ -61,11 +61,12 @@ public class WeightFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         updateLog();
 
         graph = (GraphView) view.findViewById(R.id.graph);
-        updateGraph();
+        GraphManager gm = new GraphManager(main);
+        gm.updateWeightGraph(graph);
+
         edit_weight = (EditText) view.findViewById(R.id.editWeight);
         edit_date = (EditText) view.findViewById(R.id.editDateWeight);
         edit_date.setShowSoftInputOnFocus(false);
@@ -90,7 +91,7 @@ public class WeightFragment extends Fragment {
                         em.sortEntries(um.getUser().getEntries(1));
                         um.setUserWeight();
                         updateLog();
-                        updateGraph();
+                        gm.updateWeightGraph(graph);
                         setRecyclerAdapter();
                         resetInputs();
                         text_reminder.setText("");
@@ -107,7 +108,7 @@ public class WeightFragment extends Fragment {
         button_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exportLog();
+                em.writeJSON(1);
             }
         });
         setRecyclerAdapter();
@@ -161,49 +162,8 @@ public class WeightFragment extends Fragment {
         Collections.reverse(weight_log);
     }
 
-    private void updateGraph() {
-        graph.removeAllSeries();
-        DataPoint[] datapoints = new DataPoint[um.getUser().getEntries(1).size()];
-        for (int i = 0; i < um.getUser().getEntries(1).size(); i++) {
-            WeightEntry e = (WeightEntry) um.getUser().getEntries(1).get(i);
-            datapoints[i] = new DataPoint(e.getDate().getTime() / 1000000000.0, e.getWeight());
-        }
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(datapoints);
-        series.setColor(getResources().getColor(R.color.green_500, null));
-        GridLabelRenderer glr = graph.getGridLabelRenderer();
-        glr.setHorizontalAxisTitle("Date");
-        glr.setHorizontalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        glr.setVerticalAxisTitle("Weight");
-        glr.setVerticalAxisTitleColor(getResources().getColor(R.color.grey_50, null));
-        glr.setVerticalLabelsVisible(false);
-        glr.setHorizontalLabelsVisible(false);
-        glr.setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0.0);
-        if (datapoints.length > 0) {
-            graph.getViewport().setMinX(datapoints[0].getX());
-            graph.getViewport().setMaxX(datapoints[datapoints.length - 1].getX());
-            for (DataPoint datapoint : datapoints) {
-                if (graph.getViewport().getMaxY(false) < datapoint.getY()) {
-                    graph.getViewport().setMaxY(datapoint.getY());
-                }
-            }
-        } else {
-            graph.getViewport().setMaxX(1);
-            graph.getViewport().setMaxY(1);
-        }
-        graph.addSeries(series);
-    }
-
     private void resetInputs() {
         edit_date.setText("");
         edit_weight.setText("");
     }
-
-    private void exportLog() {
-        em.writeJSON();
-    }
-
-
 }

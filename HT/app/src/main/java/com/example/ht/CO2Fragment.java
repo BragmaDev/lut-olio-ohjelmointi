@@ -83,12 +83,12 @@ public class CO2Fragment extends Fragment {
         });
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { switchToEntryFragment(); }
+            public void onClick(View v) { main.changeFragment("entry"); }
         });
         button_export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exportLog();
+                em.writeJSON(0);
             }
         });
         setRecyclerAdapter();
@@ -101,14 +101,5 @@ public class CO2Fragment extends Fragment {
         recycler_log.setItemAnimator(new DefaultItemAnimator());
         recycler_log.setAdapter(adapter);
     }
-
-    private void switchToEntryFragment() {
-        main.changeFragment("entry");
-    }
-
-    private void exportLog() {
-        em.writeJSON();
-    }
-
 
 }
