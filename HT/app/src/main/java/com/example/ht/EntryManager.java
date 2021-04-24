@@ -63,7 +63,6 @@ public class EntryManager {
     it calls the "parseResponse" method */
     public void getResponse(int[] cons) {
         URL url;
-        System.out.println(cons[0]);
 
         constructTail(cons);
         try {
@@ -100,7 +99,6 @@ public class EntryManager {
             d_arr[i] = value;
         }
 
-        System.out.println(cons[0]);
         entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4], cons);
     }
 
@@ -129,7 +127,6 @@ public class EntryManager {
             for (Entry entry : um.getUser().getEntries(0)) {
                 ClimateDietEntry cde = (ClimateDietEntry) entry;
                 try {
-                    System.out.println((cde.getInputs()[0]));
                     JSONArray arr = new JSONArray();
                     arr.put("---- EMISSIONS ----");
                     arr.put(String.format("Dairy: %.2f kg", cde.getEmissions()[0]));

@@ -30,7 +30,6 @@ public class UserManager {
     /* This method takes in a username and a password and if they match, it sets the current user to
     the corresponding one and returns true */
     public boolean switchUser(String name, String password) {
-        System.out.println(name + " and the pass is " + password);
         if (users.size() > 0) {
             for (User u : users) {
                 if (u.getName().equals(name) && u.getPassword().equals(password)) {
@@ -78,7 +77,6 @@ public class UserManager {
             users = (ArrayList<User>) is.readObject();
             is.close();
             fis.close();
-            System.out.println(users.size());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
