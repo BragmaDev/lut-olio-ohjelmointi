@@ -31,7 +31,7 @@ import java.util.Date;
 public class WeightFragment extends Fragment {
 
     View view;
-    MainActivity main = null;
+    MainActivity main;
     EntryManager em = EntryManager.getInstance();
     UserManager um = UserManager.getInstance();
     ArrayList<String> date_log = new ArrayList<>();
@@ -80,6 +80,8 @@ public class WeightFragment extends Fragment {
                 showDateDialog();
             }
         });
+
+        // Adding a new entry
         button_new_entry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,8 +165,10 @@ public class WeightFragment extends Fragment {
         Collections.reverse(weight_log);
     }
 
+    // This method resets the input fields and the selected date variable
     private void resetInputs() {
         edit_date.setText("");
         edit_weight.setText("");
+        selected_date = null;
     }
 }
