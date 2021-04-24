@@ -6,13 +6,15 @@ public class ClimateDietEntry extends Entry {
     private double plant_emission;
     private double restaurant_emission;
     private double total_emission;
+    private int[] inputs;
 
-    public ClimateDietEntry(double d, double m, double p, double r, double t) {
+    public ClimateDietEntry(double d, double m, double p, double r, double t, int[] inputs) {
         this.dairy_emission = d;
         this.meat_emission = m;
         this.plant_emission = p;
         this.restaurant_emission = r;
         this.total_emission = t;
+        this.inputs = inputs;
     }
 
     public double[] getEmissions() {
@@ -25,5 +27,7 @@ public class ClimateDietEntry extends Entry {
         };
         return arr;
     }
+
+    public int[] getInputs() { return inputs; }
 
 }

@@ -22,7 +22,7 @@
             android:background="?colorPrimary"
             android:elevation="10dp"
             app:titleTextColor="@color/grey_50"
-            app:title="EatingHabits">
+            app:title="FoodHabitTracker">
 
 
         </androidx.appcompat.widget.Toolbar>

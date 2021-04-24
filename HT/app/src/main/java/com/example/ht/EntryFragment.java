@@ -67,6 +67,7 @@ public class EntryFragment extends Fragment {
         edit_date = (EditText) view.findViewById(R.id.editDate);
         button_add = (Button) view.findViewById(R.id.buttonAdd);
         (text_reminder = (TextView) view.findViewById(R.id.textReminder)).setText("");
+        resetInputs();
 
         // Setting the seek bars to update the consumption text
         seek_beef.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -134,7 +135,6 @@ public class EntryFragment extends Fragment {
         });
         edit_date.setShowSoftInputOnFocus(false);
 
-        resetInputs();
         text_consumption.setText("- kg/week");
 
         button_add.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +213,6 @@ public class EntryFragment extends Fragment {
             em.getEntry().setDate(selected_date);
             um.getUser().addEntry(em.getEntry());
             em.sortEntries(um.getUser().getEntries(0));
-            resetInputs();
             text_reminder.setText("");
             um.saveUsers(main.getApplicationContext());
             main.changeFragment("co2");

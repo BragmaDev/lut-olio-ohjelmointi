@@ -31,6 +31,9 @@ public class User implements Serializable {
     public void setDiet(String diet) { this.diet = diet; }
     public boolean getLowCarbon() { return low_carbon; }
     public void setLowCarbon(boolean low_carbon) { this.low_carbon = low_carbon; }
+
+    /* This method takes in the arraylist id parameter and returns either the climate diet entries
+    or the weight entries arraylist based on that id (0 = climate diet, anything else = weight) */
     public ArrayList<Entry> getEntries(int arraylist_id) {
         if (arraylist_id == 0) {
             return climate_diet_entries;

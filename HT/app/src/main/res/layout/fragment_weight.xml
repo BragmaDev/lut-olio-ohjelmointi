@@ -115,7 +115,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:textColor="@color/green_500"
+        android:textColor="@color/red_600"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddWeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space3" />

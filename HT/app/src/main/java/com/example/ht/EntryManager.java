@@ -63,6 +63,7 @@ public class EntryManager {
     it calls the "parseResponse" method */
     public void getResponse(int[] cons) {
         URL url;
+        System.out.println(cons[0]);
 
         constructTail(cons);
         try {
@@ -77,7 +78,7 @@ public class EntryManager {
                 response.append(input_line);
             }
             in.close();
-            parseResponse(response);
+            parseResponse(response, cons);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,8 +86,9 @@ public class EntryManager {
 
     /* This method parses the response passed by the "getResponse" method by splitting the string
     and modifying it to leave only the wanted number values. The values are put into an array,
-    which is used to create a new climate diet entry */
-    private void parseResponse(StringBuffer response) {
+    which is used to create a new climate diet entry. The user's inputted values are also saved
+    in the entry */
+    private void parseResponse(StringBuffer response, int[] cons) {
         String[] s_arr = response.toString().split(",", 5);
         double[] d_arr = {0.0, 0.0, 0.0, 0.0, 0.0};
 
@@ -98,7 +100,8 @@ public class EntryManager {
             d_arr[i] = value;
         }
 
-        entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4]);
+        System.out.println(cons[0]);
+        entry = new ClimateDietEntry(d_arr[0], d_arr[1], d_arr[2], d_arr[3], d_arr[4], cons);
     }
 
     // Methods for getting and setting the current entry
@@ -126,12 +129,24 @@ public class EntryManager {
             for (Entry entry : um.getUser().getEntries(0)) {
                 ClimateDietEntry cde = (ClimateDietEntry) entry;
                 try {
+                    System.out.println((cde.getInputs()[0]));
                     JSONArray arr = new JSONArray();
-                    arr.put("Dairy: " + cde.getEmissions()[0] + " kg");
-                    arr.put("Meat: " + cde.getEmissions()[1] + "kg");
-                    arr.put("Plant: " + cde.getEmissions()[2] + "kg");
-                    arr.put("Restaurant: " + cde.getEmissions()[3] + "kg");
-                    arr.put("Total: " + cde.getEmissions()[4] + "kg");
+                    arr.put("---- EMISSIONS ----");
+                    arr.put(String.format("Dairy: %.2f kg", cde.getEmissions()[0]));
+                    arr.put(String.format("Meat: %.2f kg", cde.getEmissions()[1]));
+                    arr.put(String.format("Plant: %.2f kg", cde.getEmissions()[2]));
+                    arr.put(String.format("Restaurant: %.2f kg", cde.getEmissions()[3]));
+                    arr.put(String.format("Total: %.2f kg", cde.getEmissions()[4]));
+                    arr.put("---- INPUTS ----");
+                    arr.put(String.format("Beef: %.2f kg per week", cde.getInputs()[0] * 0.01 * 0.4));
+                    arr.put(String.format("Fish: %.2f kg per week", cde.getInputs()[1] * 0.01 * 0.6));
+                    arr.put(String.format("Pork and poultry: %.2f kg per week", cde.getInputs()[2] * 0.01));
+                    arr.put(String.format("Dairy: %.2f kg per week", cde.getInputs()[3] * 0.01 * 3.8));
+                    arr.put(String.format("Cheese: %.2f kg per week", cde.getInputs()[4] * 0.01 * 0.3));
+                    arr.put(String.format("Rice: %.2f kg per week", cde.getInputs()[5] * 0.01 * 0.09));
+                    arr.put(String.format("Winter salad: %.2f kg per week", cde.getInputs()[6] * 0.01 * 1.4));
+                    arr.put(String.format("Restaurant: %d € per week", cde.getInputs()[7]));
+                    arr.put(String.format("Eggs: %d per week", cde.getInputs()[8]));
                     obj.put(sdf.format(entry.getDate()), arr);
                 } catch (JSONException e) {
                     e.printStackTrace();
