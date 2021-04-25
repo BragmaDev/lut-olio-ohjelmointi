@@ -2,8 +2,6 @@ package com.example.ht;
 
 import android.graphics.Color;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.LegendRenderer;

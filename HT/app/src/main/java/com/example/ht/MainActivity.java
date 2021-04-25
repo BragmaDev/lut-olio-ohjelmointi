@@ -16,8 +16,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentChangeListener {
 
     Context context = MainActivity.this;
