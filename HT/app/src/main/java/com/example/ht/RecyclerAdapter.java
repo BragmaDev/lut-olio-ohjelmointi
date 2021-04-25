@@ -39,6 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Adapte
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.AdapterViewHolder holder, int position) {
+        // Setting the item texts
         String date = dates.get(position);
         double value = values.get(position);
         holder.text_date.setText(date);

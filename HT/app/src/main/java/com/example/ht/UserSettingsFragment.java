@@ -66,6 +66,7 @@ public class UserSettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!diet_initialized) {
+                    // If the spinner has just been created, it won't set the user's diet on its own
                     spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet()));
                     diet_initialized = true;
                 } else {
@@ -78,7 +79,6 @@ public class UserSettingsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) { spinner_diet.setSelection(adapter1.getPosition(um.getUser().getDiet())); }
 
         });
-
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
                 R.array.prefs, R.layout.spinner_layout);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,6 +87,7 @@ public class UserSettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!low_carbon_initialized) {
+                    // If the spinner has just been created, it won't set the user's preference on its own
                     if (um.getUser().getLowCarbon()) {
                         spinner_low_carbon.setSelection(0);
                     } else {

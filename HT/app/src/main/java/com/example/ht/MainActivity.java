@@ -69,21 +69,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    // This method changes the fragment when an item is selected in the side menu
+    // This method changes the fragment if the user is logged in and an item is selected in the side menu
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.co2_emission) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
-        } else if (item.getItemId() == R.id.settings) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, user_settings_fragment).commit();
-        } else if (item.getItemId() == R.id.account){
-            frag_manager.beginTransaction().replace(R.id.frag_container, login_fragment).commit();
-        } else if (item.getItemId() == R.id.weight) {
-            frag_manager.beginTransaction().replace(R.id.frag_container, weight_fragment).commit();
-        } else {
-            frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
+        if (um.getUser() != null) {
+            if (item.getItemId() == R.id.co2_emission) {
+                frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
+            } else if (item.getItemId() == R.id.settings) {
+                frag_manager.beginTransaction().replace(R.id.frag_container, user_settings_fragment).commit();
+            } else if (item.getItemId() == R.id.account){
+                frag_manager.beginTransaction().replace(R.id.frag_container, login_fragment).commit();
+            } else if (item.getItemId() == R.id.weight) {
+                frag_manager.beginTransaction().replace(R.id.frag_container, weight_fragment).commit();
+            } else {
+                frag_manager.beginTransaction().replace(R.id.frag_container, co2_fragment).commit();
+            }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START);
         return true;
     }

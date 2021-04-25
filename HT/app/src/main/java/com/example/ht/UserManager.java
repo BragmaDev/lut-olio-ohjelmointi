@@ -21,6 +21,8 @@ public class UserManager {
     private UserManager() {}
     public static UserManager getInstance() { return um; }
 
+    /* This method takes in a name, a password and the context and creates a new user, adding it to
+    the arraylist */
     public void createUser(String name, String password, Context context) {
         User new_user = new User(name, password);
         users.add(new_user);

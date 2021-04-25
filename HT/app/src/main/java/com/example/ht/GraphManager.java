@@ -20,7 +20,7 @@ public class GraphManager {
     LineGraphSeries<DataPoint> series_restaurant;
     LineGraphSeries<DataPoint> series_total;
 
-    boolean advanced_graph_toggled = false;
+    private boolean advanced_graph_toggled = false;
 
     public GraphManager(MainActivity main) { this.main = main; }
 
